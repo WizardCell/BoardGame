@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1082
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MtmEx3", "MtmEx3\MtmEx3.vcxproj", "{1E55D6A1-02EB-4A5D-A621-8443BAC6B820}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1E55D6A1-02EB-4A5D-A621-8443BAC6B820}.Debug|x64.ActiveCfg = Debug|x64
+		{1E55D6A1-02EB-4A5D-A621-8443BAC6B820}.Debug|x64.Build.0 = Debug|x64
+		{1E55D6A1-02EB-4A5D-A621-8443BAC6B820}.Debug|x86.ActiveCfg = Debug|Win32
+		{1E55D6A1-02EB-4A5D-A621-8443BAC6B820}.Debug|x86.Build.0 = Debug|Win32
+		{1E55D6A1-02EB-4A5D-A621-8443BAC6B820}.Release|x64.ActiveCfg = Release|x64
+		{1E55D6A1-02EB-4A5D-A621-8443BAC6B820}.Release|x64.Build.0 = Release|x64
+		{1E55D6A1-02EB-4A5D-A621-8443BAC6B820}.Release|x86.ActiveCfg = Release|Win32
+		{1E55D6A1-02EB-4A5D-A621-8443BAC6B820}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5E749710-B4B2-446E-BFAE-70726FEBEAEE}
+	EndGlobalSection
+EndGlobal

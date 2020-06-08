@@ -42,8 +42,9 @@ namespace mtm
 		IntMatrix operator-() const;
 		IntMatrix operator-(const IntMatrix& matrix) const;
 		IntMatrix& operator=(const IntMatrix& m);
-
 	};
+	 IntMatrix operator+(const IntMatrix& matrix1, const IntMatrix& matrix2);
+
 }
 
 

@@ -1,7 +1,7 @@
 #include "IntMatrix.h"
 
 mtm::IntMatrix::IntMatrix(Dimensions dims, int initVal)
-	: this->dims(dims)
+	: dims(dims.getRow(),dims.getCol())
 {
 	this->matrix = new int*[dims.getRow()];
 	for (int i = 0; i < dims.getRow(); i++)
@@ -18,21 +18,19 @@ mtm::IntMatrix::IntMatrix(Dimensions dims, int initVal)
 	}
 }
 
-mtm::IntMatrix::IntMatrix(const IntMatrix& matrix)
-	: this->matrix(new int*[matrix.dims.getRow()]), this->dims(matrix.dims)
+mtm::IntMatrix::IntMatrix(const IntMatrix& matrix1)
+	:  dims(dims.getRow(),dims.getCol())
 {
-	for (int i = 0; i < dims.getRow(); i++)
+	matrix = new int*[dims.getRow()];
+	for(int i = 0; i < dims.getRow(); i++)
 	{
-		this->matrix[i] = new int[dims.getCol()];
+		matrix[i] = new int[dims.getCol()];
 	}
-
-	for (int i = 0; i < dims.getRow(); i++) 
-	{
-		for (int j = 0; j < dims.getCol(); j++) 
-		{
-			matrix[i][j] = matrix[i][j];
-		}
-	}
+    for ( int i=0; i<dims.getRow();i++){
+        for ( int j=0; j<dims.getCol();j++){
+            matrix[i][j] = matrix1.matrix[i][j];
+        }
+    }
 }
 
 mtm::IntMatrix::~IntMatrix()
@@ -45,14 +43,14 @@ mtm::IntMatrix::~IntMatrix()
 	delete[] matrix;
 }
 
-static IntMatrix mtm::IntMatrix::Identity(int size)
+IntMatrix mtm::IntMatrix::Identity(int size)
 {
 	Dimensions identityDims(size, size);
 	IntMatrix identity(identityDims);
 
-	for (int i = 0; i < dims.getRow(); i++)
+	for (int i = 0; i < identityDims.getRow(); i++)
 	{
-		identity[i][i] = 1;
+		identity.matrix[i][i] = 1;
 	}
 }
 
@@ -65,20 +63,20 @@ IntMatrix mtm::IntMatrix::transpose() const
 	{
 		for (int j = 0; j < dims.getCol(); i++)
 		{
-			transposedMatrix[j][i] = matrix[i][j];
+			transposedMatrix.matrix[j][i] = matrix[i][j];
 		}
 	}
 }
 
-IntMatrix mtm::IntMatrix::operator+(const IntMatrix& matrix) const;
+IntMatrix operator+(const IntMatrix& matrix1, const IntMatrix& matrix2)
 {
-	IntMatrix result(*this);
+	IntMatrix result(matrix1.dims);
 
-	for (int i = 0; i < dims.getRow(); i++)
+	for (int i = 0; i < matrix1.dims.getRow(); i++)
 	{
-		for (int j = 0; j < dims.getCol(); j++)
+		for (int j = 0; j < matrix1.dims.getCol(); j++)
 		{
-			result[i][j] += matrix[i][j];
+			result.matrix[i][j]= matrix1.matrix[i][j] + matrix2.matrix[i][j];
 		}
 	}
 

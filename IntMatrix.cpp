@@ -91,7 +91,7 @@ IntMatrix mtm::IntMatrix::operator-() const
 	{
 		for (int j = 0; j < dims.getCol(); j++)
 		{
-			result[i][j] *= -1;
+			result.matrix[i][j] *= -1;
 		}
 	}
 
@@ -100,7 +100,7 @@ IntMatrix mtm::IntMatrix::operator-() const
 
 IntMatrix mtm::IntMatrix::operator-(const IntMatrix& matrix) const
 {
-	return *this - matrix;
+	return operator+(*this,-matrix);
 }
 
 mtm::IntMatrix& mtm::IntMatrix::operator=(const IntMatrix& m)
@@ -109,19 +109,19 @@ mtm::IntMatrix& mtm::IntMatrix::operator=(const IntMatrix& m)
 	{
 		return *this;
 	}
-	for (int i = 0; i < dim.getRow(); i++)
+	for (int i = 0; i < dims.getRow(); i++)
 	{
 		delete[] matrix[i];
 	}
 	delete[] matrix;
 	dims = m.dims;       //deafult = for Dimensions
-	matrix = new int*[dim.getRow()];
-	for (int i = 0; i < dim.getRow(); i++)
+	matrix = new int*[dims.getRow()];
+	for (int i = 0; i < dims.getRow(); i++)
 	{
-		matrix[i] = new int[dim.getCol()];
+		matrix[i] = new int[dims.getCol()];
 	}
-	for (int i = 0; i < dim.getRow(); i++) {
-		for (int j = 0; j < dim.getCol(); j++) {
+	for (int i = 0; i < dims.getRow(); i++) {
+		for (int j = 0; j < dims.getCol(); j++) {
 			matrix[i][j] = m.matrix[i][j];
 		}
 	}

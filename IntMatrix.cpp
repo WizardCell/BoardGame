@@ -68,7 +68,7 @@ IntMatrix mtm::IntMatrix::transpose() const
 	}
 }
 
-IntMatrix operator+(const IntMatrix& matrix1, const IntMatrix& matrix2)
+IntMatrix mtm::operator+(const IntMatrix& matrix1, const IntMatrix& matrix2)
 {
 	IntMatrix result(matrix1.dims);
 

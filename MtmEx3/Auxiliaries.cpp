@@ -28,7 +28,7 @@ int mtm::Dimensions::getCol() const
     return col;
 }
 
-std::string mtm::printMatrix(const int* matrix,const dimssensions& dims)
+std::string mtm::printMatrix(const int* matrix,const Dimensions& dims)
 {
     std::string matrix_str;
     int col_length = dims.getCol();

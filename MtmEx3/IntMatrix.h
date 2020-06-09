@@ -37,16 +37,17 @@ namespace mtm
 		}
 
 		IntMatrix transpose() const;
-
 		friend IntMatrix operator+(const IntMatrix& matrix1, const IntMatrix& matrix2);
 		IntMatrix operator-() const;
 		IntMatrix operator-(const IntMatrix& matrix) const;
 		IntMatrix& operator=(const IntMatrix& m);
 		IntMatrix& operator+=(int number);
+		friend std::ostream& operator<<(std::ostream& os, const IntMatrix& m);
 	};
 	 IntMatrix operator+(const IntMatrix& matrix1, const IntMatrix& matrix2);
 	 IntMatrix operator+(const IntMatrix& matrix1, int number);
 	 IntMatrix operator+(int number, const IntMatrix& matrix1);
+	 std::ostream& operator<<(std::ostream& os, const IntMatrix& m);
 
 
 }

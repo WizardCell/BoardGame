@@ -1,0 +1,7 @@
+[
+{
+  "directory": "D:/doc/MtmEx3/build",
+  "command": "D:\\gcc\\bin\\x86_64-w64-mingw32-g++.exe    -g   -o CMakeFiles\\matrix.dir\\main.cpp.obj -c D:\\doc\\MtmEx3\\main.cpp",
+  "file": "D:/doc/MtmEx3/main.cpp"
+}
+]

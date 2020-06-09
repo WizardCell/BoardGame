@@ -19,7 +19,7 @@ mtm::IntMatrix::IntMatrix(Dimensions dims, int initVal)
 }
 
 mtm::IntMatrix::IntMatrix(const IntMatrix& matrix1)
-	:  dims(dims.getRow(),dims.getCol())
+	:  dims(matrix1.dims.getRow(),matrix1.dims.getCol())
 {
 	matrix = new int*[dims.getRow()];
 	for(int i = 0; i < dims.getRow(); i++)
@@ -52,6 +52,7 @@ mtm::IntMatrix mtm::IntMatrix::Identity(int size)
 	{
 		identity.matrix[i][i] = 1;
 	}
+	return identity;
 }
 
 mtm::IntMatrix mtm::IntMatrix::transpose() const
@@ -66,6 +67,7 @@ mtm::IntMatrix mtm::IntMatrix::transpose() const
 			transposedMatrix.matrix[j][i] = matrix[i][j];
 		}
 	}
+	return transposedMatrix;
 }
 
 mtm::IntMatrix mtm::operator+(const IntMatrix& matrix1, const IntMatrix& matrix2)
@@ -148,3 +150,18 @@ mtm::IntMatrix mtm::operator+(int number, const IntMatrix& matrix1)
 {
    return (matrix1 + number);
 }
+
+std::ostream& mtm::operator<<(std::ostream& os, const mtm::IntMatrix& matrix1)
+{
+	int col = matrix1.dims.getCol();
+	int row = matrix1.dims.getRow();
+    int* matrix_values = new int[matrix1.size()];
+	for (int i=0;i<row;i++){
+		for (int j=0;j<col;j++){
+			matrix_values[i*col + j] = matrix1.matrix[i][j];
+		}
+	}
+	std::string str = printMatrix(matrix_values,matrix1.dims);
+	return os << str ;
+}
+

@@ -43,7 +43,7 @@ mtm::IntMatrix::~IntMatrix()
 	delete[] matrix;
 }
 
-IntMatrix mtm::IntMatrix::Identity(int size)
+mtm::IntMatrix mtm::IntMatrix::Identity(int size)
 {
 	Dimensions identityDims(size, size);
 	IntMatrix identity(identityDims);
@@ -54,7 +54,7 @@ IntMatrix mtm::IntMatrix::Identity(int size)
 	}
 }
 
-IntMatrix mtm::IntMatrix::transpose() const
+mtm::IntMatrix mtm::IntMatrix::transpose() const
 {
 	Dimensions(dims.getCol(), dims.getRow());
 	IntMatrix transposedMatrix(dims);
@@ -68,7 +68,7 @@ IntMatrix mtm::IntMatrix::transpose() const
 	}
 }
 
-IntMatrix mtm::operator+(const IntMatrix& matrix1, const IntMatrix& matrix2)
+mtm::IntMatrix mtm::operator+(const IntMatrix& matrix1, const IntMatrix& matrix2)
 {
 	IntMatrix result(matrix1.dims);
 
@@ -83,7 +83,7 @@ IntMatrix mtm::operator+(const IntMatrix& matrix1, const IntMatrix& matrix2)
 	return result;
 }
 
-IntMatrix mtm::IntMatrix::operator-() const
+mtm::IntMatrix mtm::IntMatrix::operator-() const
 {
 	IntMatrix result(*this);
 
@@ -98,7 +98,7 @@ IntMatrix mtm::IntMatrix::operator-() const
 	return result;
 }
 
-IntMatrix mtm::IntMatrix::operator-(const IntMatrix& matrix) const
+mtm::IntMatrix mtm::IntMatrix::operator-(const IntMatrix& matrix) const
 {
 	return operator+(*this,-matrix);
 }
@@ -126,4 +126,25 @@ mtm::IntMatrix& mtm::IntMatrix::operator=(const IntMatrix& m)
 		}
 	}
 	return *this;
+}
+
+
+mtm::IntMatrix& mtm::IntMatrix::operator+=(int number)
+{
+	for (int i=0;i<dims.getRow();i++){
+		for (int j=0;j<dims.getCol();j++){
+			matrix[i][j] += number ;
+		}
+	}
+	return (*this);
+}
+
+mtm::IntMatrix  mtm::operator+(const IntMatrix& matrix1, int number)
+{
+	return IntMatrix(matrix1) += number;
+}
+
+mtm::IntMatrix mtm::operator+(int number, const IntMatrix& matrix1)
+{
+   return (matrix1 + number);
 }

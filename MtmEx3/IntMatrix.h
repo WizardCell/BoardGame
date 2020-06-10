@@ -43,6 +43,9 @@ namespace mtm
 		IntMatrix& operator=(const IntMatrix& m);
 		IntMatrix& operator+=(int number);
 		friend std::ostream& operator<<(std::ostream& os, const IntMatrix& m);
+		int& operator()(int i ,int j) ;
+		const int& operator()(int i ,int j) const;
+		IntMatrix& operator<(int number);
 	};
 	 IntMatrix operator+(const IntMatrix& matrix1, const IntMatrix& matrix2);
 	 IntMatrix operator+(const IntMatrix& matrix1, int number);

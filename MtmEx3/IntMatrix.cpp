@@ -165,3 +165,34 @@ std::ostream& mtm::operator<<(std::ostream& os, const mtm::IntMatrix& matrix1)
 	return os << str ;
 }
 
+int& mtm::IntMatrix::operator()(int i ,int j)
+{
+	return matrix[i][j];
+}
+
+const int& mtm::IntMatrix::operator()(int i ,int j) const
+{
+	return matrix[i][j];
+}
+
+mtm::IntMatrix& mtm::IntMatrix::operator<(int number)
+{
+	IntMatrix result(dims);
+	for (int i = 0; i < dims.getRow(); i++)
+	{
+		for (int j = 0; j < dims.getCol(); i++)
+		{
+			if ( matrix[i][j] < number)
+			{
+				result(i,j) = 1 ;  //operator ()
+			}else
+			{
+				result(i,j) = 0;
+			}
+			
+		}
+		
+	}
+	return result;
+}
+

@@ -13,13 +13,13 @@ namespace mtm
 	{
 		int** matrix;
 		Dimensions dims;
+		static IntMatrix requiredMatrix(IntMatrix  matrix1, bool (*comp)(int,int),int number);
 
 	public:
 		IntMatrix(Dimensions dims, int initVal = 0);
 		IntMatrix(const IntMatrix&);
 		~IntMatrix();
-
-		static IntMatrix Identity(int size);
+		 static IntMatrix Identity(int size);
 
 		int height() const
 		{
@@ -45,12 +45,23 @@ namespace mtm
 		friend std::ostream& operator<<(std::ostream& os, const IntMatrix& m);
 		int& operator()(int i ,int j) ;
 		const int& operator()(int i ,int j) const;
-		IntMatrix& operator<(int number);
+		IntMatrix operator<(int number);
+		IntMatrix operator<=(int number);
+		IntMatrix operator>(int number);
+		IntMatrix operator>=(int number);
+		IntMatrix operator==(int number);
+		IntMatrix operator!=(int number);
 	};
 	 IntMatrix operator+(const IntMatrix& matrix1, const IntMatrix& matrix2);
 	 IntMatrix operator+(const IntMatrix& matrix1, int number);
 	 IntMatrix operator+(int number, const IntMatrix& matrix1);
 	 std::ostream& operator<<(std::ostream& os, const IntMatrix& m);
+	 bool bigger(int a,int b);
+	 bool biggerEqual(int a,int b);
+	 bool min(int a,int b);
+	 bool minEqual(int a,int b);
+	 bool isEqual(int a,int b);
+	 bool notEqual(int a,int b);
 
 
 }

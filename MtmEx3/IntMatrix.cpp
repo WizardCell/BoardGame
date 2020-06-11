@@ -175,14 +175,72 @@ const int& mtm::IntMatrix::operator()(int i ,int j) const
 	return matrix[i][j];
 }
 
-mtm::IntMatrix& mtm::IntMatrix::operator<(int number)
+// simple logic functions 
+bool mtm::bigger(int a,int b)
 {
-	IntMatrix result(dims);
-	for (int i = 0; i < dims.getRow(); i++)
+	return a>b;
+}
+bool mtm::min(int a,int b)
+{
+	return a<b;
+}
+bool mtm::biggerEqual(int a,int b)
+{
+	return a>=b;
+}
+bool mtm::minEqual(int a,int b)
+{
+	return a<=b;
+}
+bool mtm::isEqual(int a,int b)
+{
+	return a==b;
+}
+bool mtm::notEqual(int a,int b)
+{
+	return a!=b;
+}
+
+mtm::IntMatrix mtm::IntMatrix::operator<(int number)
+{
+    return requiredMatrix(*this,min,number);
+}
+
+mtm::IntMatrix mtm::IntMatrix::operator<=(int number)
+{
+	return requiredMatrix(*this,minEqual,number);
+}
+
+mtm::IntMatrix mtm::IntMatrix::operator>=(int number)
+{
+	return requiredMatrix(*this,biggerEqual,number);
+}
+
+mtm::IntMatrix mtm::IntMatrix::operator>(int number)
+{
+	return requiredMatrix(*this,bigger,number);
+}
+
+mtm::IntMatrix mtm::IntMatrix::operator==(int number)
+{
+	return requiredMatrix(*this,isEqual,number);
+}
+
+mtm::IntMatrix mtm::IntMatrix::operator!=(int number)
+{
+	return requiredMatrix(*this,notEqual,number);
+}
+
+
+//helper function do the comparison according to the comp function.and return the result
+mtm::IntMatrix mtm::IntMatrix::requiredMatrix(mtm::IntMatrix matrix1, bool (*comp)(int,int),int number) 
+{
+	mtm::IntMatrix result(matrix1.dims);
+	for (int i = 0; i < matrix1.dims.getRow(); i++)
 	{
-		for (int j = 0; j < dims.getCol(); i++)
+		for (int j = 0; j < matrix1.dims.getCol(); j++)
 		{
-			if ( matrix[i][j] < number)
+			if (comp(matrix1.matrix[i][j],number))
 			{
 				result(i,j) = 1 ;  //operator ()
 			}else
@@ -196,3 +254,19 @@ mtm::IntMatrix& mtm::IntMatrix::operator<(int number)
 	return result;
 }
 
+
+
+
+
+int main ()
+{
+	mtm::Dimensions dim(2 ,3);
+    mtm::IntMatrix mat_2(dim,2);
+	mtm::IntMatrix mat_3(dim,2);
+	mat_3 = mat_2 < 3 ;
+	mat_3 = mat_3 == 3; 
+	std::cout << mat_3;
+	
+	return 0 ;
+
+}

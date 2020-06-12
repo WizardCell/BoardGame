@@ -51,11 +51,15 @@ namespace mtm
 		IntMatrix operator>=(int number);
 		IntMatrix operator==(int number);
 		IntMatrix operator!=(int number);
+		friend bool all(IntMatrix matrix1);
+		friend bool any(IntMatrix matrix1);
 	};
 	 IntMatrix operator+(const IntMatrix& matrix1, const IntMatrix& matrix2);
 	 IntMatrix operator+(const IntMatrix& matrix1, int number);
 	 IntMatrix operator+(int number, const IntMatrix& matrix1);
 	 std::ostream& operator<<(std::ostream& os, const IntMatrix& m);
+	 bool all(IntMatrix matrix1);
+	 bool any(IntMatrix matrix1);
 	 bool bigger(int a,int b);
 	 bool biggerEqual(int a,int b);
 	 bool min(int a,int b);

@@ -57,14 +57,14 @@ mtm::IntMatrix mtm::IntMatrix::Identity(int size)
 
 mtm::IntMatrix mtm::IntMatrix::transpose() const
 {
-	Dimensions(dims.getCol(), dims.getRow());
-	IntMatrix transposedMatrix(dims);
+	Dimensions  dim(dims.getCol(), dims.getRow());
+	IntMatrix transposedMatrix(dim);
 
-	for (int i = 0; i < dims.getRow(); i++)
+	for (int i = 0; i < dims.getCol(); i++)
 	{
-		for (int j = 0; j < dims.getCol(); i++)
+		for (int j = 0; j < dims.getRow(); j++)
 		{
-			transposedMatrix.matrix[j][i] = matrix[i][j];
+			transposedMatrix.matrix[i][j] = matrix[j][i];
 		}
 	}
 	return transposedMatrix;
@@ -254,19 +254,32 @@ mtm::IntMatrix mtm::IntMatrix::requiredMatrix(mtm::IntMatrix matrix1, bool (*com
 	return result;
 }
 
-
-
-
-
-int main ()
+bool mtm::all(IntMatrix matrix1)
 {
-	mtm::Dimensions dim(2 ,3);
-    mtm::IntMatrix mat_2(dim,2);
-	mtm::IntMatrix mat_3(dim,2);
-	mat_3 = mat_2 < 3 ;
-	mat_3 = mat_3 == 3; 
-	std::cout << mat_3;
-	
-	return 0 ;
-
+	for (int i = 0; i < matrix1.dims.getRow(); i++)
+	{
+		for (int j = 0; j < matrix1.dims.getCol(); j++)
+		{
+			if (matrix1(i,j) == 0)
+			return false;
+		}
+	}
+	return true;
 }
+
+bool mtm::any(IntMatrix matrix1)
+{
+   for (int i = 0; i < matrix1.dims.getRow(); i++)
+	{
+		for (int j = 0; j < matrix1.dims.getCol(); j++)
+		{
+			if (matrix1(i,j) != 0)
+			return true;
+		}
+	}
+	return false;
+}
+
+
+
+

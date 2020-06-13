@@ -101,6 +101,7 @@ bool test_5(){
     }
     return true;
 }
+
 void run_test(std::function<bool()> test, std::string test_name){
     if(!test()){
         std::cout<<test_name<<" FAILED."<<std::endl;

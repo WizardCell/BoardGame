@@ -16,16 +16,16 @@ namespace mtm
 		Dimensions dims;
 
 		//TODO: shouldn't be a public function?
+		// NO , i just need to use this function(for internal impelementaion) and not external user.(helper function)
 		static IntMatrix requiredMatrix(IntMatrix matrix, bool(*compare)(int, int), int number);
 
 	public:
 		/* Iterator class*/
-		class Iterator;
+		class iterator;
 
-		Iterator begin() const;
-		Iterator end() const;
+		iterator begin();
+		iterator end();
 
-	public:
 		IntMatrix(Dimensions dims, int initVal = 0);
 		IntMatrix(const IntMatrix& other);
 		~IntMatrix();
@@ -85,23 +85,23 @@ namespace mtm
 	bool isEqual(int a, int b);
 	bool notEqual(int a, int b);
 
-	class IntMatrix::Iterator
+	class IntMatrix::iterator
 	{
-		const IntMatrix* matrix;
-		const Dimensions dims;
+		IntMatrix* matrix;     // we dont want const matrix ( const matrixes are handled in ::const iterator)
+		Dimensions dims;
 		int index;
-		Iterator(const IntMatrix* matrix, const Dimensions dims, int index);
+		iterator(IntMatrix* matrix, const Dimensions dims, int index);
 		friend class IntMatrix;
 
 	public:
-		const int& operator*() const;
-		Iterator& operator++();
-		Iterator operator++(int);
-		bool operator==(const Iterator& it) const;
-		bool operator!=(const Iterator& it) const;
-		Iterator(const Iterator&) = default;
-		Iterator& operator=(const Iterator&) = default;
-		~Iterator();
+	    int& operator*() const;  //u cant return const , it is normal iterator not the const iterator.
+		iterator& operator++();
+		iterator operator++(int);
+		bool operator==(const iterator& it) const;
+		bool operator!=(const iterator& it) const;
+		iterator(const iterator&) = default;
+		iterator& operator=(const iterator&) = default;
+		~iterator();
 
 
 	};

@@ -28,13 +28,16 @@ int mtm::Dimensions::getCol() const
     return col;
 }
 
+/* Converts a matrix into a string */
 std::string mtm::printMatrix(const int* matrix,const Dimensions& dims)
 {
     std::string matrix_str;
     int col_length = dims.getCol();
-    for (int i = 0; i <dims.getRow(); i++) {
-        for (int j = 0; j < col_length ; j++) {
-            matrix_str+= std::to_string(*(matrix+col_length*i+j)) + " "; 
+    for (int i = 0; i <dims.getRow(); i++)
+	{
+        for (int j = 0; j < col_length ; j++)
+		{
+            matrix_str+= std::to_string(*(matrix+col_length*i+j)) + " ";
         }
         matrix_str+=  "\n";
     }

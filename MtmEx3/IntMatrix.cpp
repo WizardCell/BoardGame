@@ -1,46 +1,58 @@
 #include "IntMatrix.h"
+#include <assert.h>
+
+/* IntMatrix class */
 
 mtm::IntMatrix::IntMatrix(Dimensions dims, int initVal)
-	: dims(dims.getRow(),dims.getCol())
+	: dims(dims.getRow(), dims.getCol()), array2D(new int*[dims.getRow()])
 {
-	this->matrix = new int*[dims.getRow()];
 	for (int i = 0; i < dims.getRow(); i++)
 	{
-		this->matrix[i] = new int[dims.getCol()];
+		array2D[i] = new int[dims.getCol()];
 	}
 
 	for (int i = 0; i < dims.getRow(); i++)
 	{
 		for (int j = 0; j < dims.getCol(); j++)
 		{
-			matrix[i][j] = initVal;
+			array2D[i][j] = initVal;
 		}
 	}
 }
 
-mtm::IntMatrix::IntMatrix(const IntMatrix& matrix1)
-	:  dims(matrix1.dims.getRow(),matrix1.dims.getCol())
+mtm::IntMatrix::IntMatrix(const IntMatrix& other)
+	: dims(other.dims.getRow(), other.dims.getCol()), array2D(new int*[dims.getRow()])
 {
-	matrix = new int*[dims.getRow()];
-	for(int i = 0; i < dims.getRow(); i++)
+	for (int i = 0; i < dims.getRow(); i++)
 	{
-		matrix[i] = new int[dims.getCol()];
+		array2D[i] = new int[dims.getCol()];
 	}
-    for ( int i=0; i<dims.getRow();i++){
-        for ( int j=0; j<dims.getCol();j++){
-            matrix[i][j] = matrix1.matrix[i][j];
-        }
-    }
+	for (int i = 0; i < dims.getRow(); i++)
+	{
+		for (int j = 0; j < dims.getCol(); j++)
+		{
+			array2D[i][j] = other.array2D[i][j];
+		}
+	}
 }
 
 mtm::IntMatrix::~IntMatrix()
 {
 	for (int i = 0; i < dims.getRow(); i++)
 	{
-		delete[] matrix[i];
+		delete[] array2D[i];
 	}
+	delete[] array2D;
+}
 
-	delete[] matrix;
+mtm::IntMatrix::Iterator mtm::IntMatrix::begin() const
+{
+	return Iterator(this, dims, 0);
+}
+
+mtm::IntMatrix::Iterator mtm::IntMatrix::end() const
+{
+	return Iterator(this, dims, this->size());
 }
 
 mtm::IntMatrix mtm::IntMatrix::Identity(int size)
@@ -50,21 +62,21 @@ mtm::IntMatrix mtm::IntMatrix::Identity(int size)
 
 	for (int i = 0; i < identityDims.getRow(); i++)
 	{
-		identity.matrix[i][i] = 1;
+		identity.array2D[i][i] = 1;
 	}
 	return identity;
 }
 
 mtm::IntMatrix mtm::IntMatrix::transpose() const
 {
-	Dimensions  dim(dims.getCol(), dims.getRow());
+	Dimensions dim(dims.getCol(), dims.getRow());
 	IntMatrix transposedMatrix(dim);
 
 	for (int i = 0; i < dims.getCol(); i++)
 	{
 		for (int j = 0; j < dims.getRow(); j++)
 		{
-			transposedMatrix.matrix[i][j] = matrix[j][i];
+			transposedMatrix.array2D[i][j] = array2D[j][i];
 		}
 	}
 	return transposedMatrix;
@@ -78,10 +90,9 @@ mtm::IntMatrix mtm::operator+(const IntMatrix& matrix1, const IntMatrix& matrix2
 	{
 		for (int j = 0; j < matrix1.dims.getCol(); j++)
 		{
-			result.matrix[i][j]= matrix1.matrix[i][j] + matrix2.matrix[i][j];
+			result.array2D[i][j] = matrix1.array2D[i][j] + matrix2.array2D[i][j];
 		}
 	}
-
 	return result;
 }
 
@@ -93,38 +104,43 @@ mtm::IntMatrix mtm::IntMatrix::operator-() const
 	{
 		for (int j = 0; j < dims.getCol(); j++)
 		{
-			result.matrix[i][j] *= -1;
+			result.array2D[i][j] *= -1;
 		}
 	}
-
 	return result;
 }
 
 mtm::IntMatrix mtm::IntMatrix::operator-(const IntMatrix& matrix) const
 {
-	return operator+(*this,-matrix);
+	return operator+(*this, -matrix);
 }
 
-mtm::IntMatrix& mtm::IntMatrix::operator=(const IntMatrix& m)
+mtm::IntMatrix& mtm::IntMatrix::operator=(const IntMatrix& other)
 {
-	if (this == &m)    //checking selfOperator=
+	if (this == &other)    //checking selfOperator=
 	{
 		return *this;
 	}
+
 	for (int i = 0; i < dims.getRow(); i++)
 	{
-		delete[] matrix[i];
+		delete[] this->array2D[i];
 	}
-	delete[] matrix;
-	dims = m.dims;       //deafult = for Dimensions
-	matrix = new int*[dims.getRow()];
+	delete[] this->array2D;
+
+	dims = other.dims;
+	array2D = new int*[dims.getRow()];
+
 	for (int i = 0; i < dims.getRow(); i++)
 	{
-		matrix[i] = new int[dims.getCol()];
+		array2D[i] = new int[dims.getCol()];
 	}
-	for (int i = 0; i < dims.getRow(); i++) {
-		for (int j = 0; j < dims.getCol(); j++) {
-			matrix[i][j] = m.matrix[i][j];
+
+	for (int i = 0; i < dims.getRow(); i++) 
+	{
+		for (int j = 0; j < dims.getCol(); j++) 
+		{
+			array2D[i][j] = other.array2D[i][j];
 		}
 	}
 	return *this;
@@ -133,153 +149,200 @@ mtm::IntMatrix& mtm::IntMatrix::operator=(const IntMatrix& m)
 
 mtm::IntMatrix& mtm::IntMatrix::operator+=(int number)
 {
-	for (int i=0;i<dims.getRow();i++){
-		for (int j=0;j<dims.getCol();j++){
-			matrix[i][j] += number ;
+	for (int i = 0; i < dims.getRow(); i++)
+	{
+		for (int j = 0; j < dims.getCol(); j++)
+		{
+			array2D[i][j] += number;
 		}
 	}
 	return (*this);
 }
 
-mtm::IntMatrix  mtm::operator+(const IntMatrix& matrix1, int number)
+mtm::IntMatrix mtm::operator+(const IntMatrix& matrix, int number)
 {
-	return IntMatrix(matrix1) += number;
+	return IntMatrix(matrix) += number;
 }
 
-mtm::IntMatrix mtm::operator+(int number, const IntMatrix& matrix1)
+mtm::IntMatrix mtm::operator+(int number, const IntMatrix& matrix)
 {
-   return (matrix1 + number);
+	return (matrix + number);
 }
 
-std::ostream& mtm::operator<<(std::ostream& os, const mtm::IntMatrix& matrix1)
+std::ostream& mtm::operator<<(std::ostream& os, const mtm::IntMatrix& matrix)
 {
-	int col = matrix1.dims.getCol();
-	int row = matrix1.dims.getRow();
-    int* matrix_values = new int[matrix1.size()];
-	for (int i=0;i<row;i++){
-		for (int j=0;j<col;j++){
-			matrix_values[i*col + j] = matrix1.matrix[i][j];
+	int col = matrix.dims.getCol();
+	int row = matrix.dims.getRow();
+
+	int* matrix_values = new int[matrix.size()];
+	for (int i = 0; i < row; i++)
+	{
+		for (int j = 0; j < col; j++)
+		{
+			matrix_values[i*col + j] = matrix.array2D[i][j];
 		}
 	}
-	std::string str = printMatrix(matrix_values,matrix1.dims);
-	return os << str ;
+
+	std::string str = printMatrix(matrix_values, matrix.dims);
+	return os << str;
 }
 
-int& mtm::IntMatrix::operator()(int i ,int j)
+int& mtm::IntMatrix::operator()(int i, int j)
 {
-	return matrix[i][j];
+	return array2D[i][j];
 }
 
-const int& mtm::IntMatrix::operator()(int i ,int j) const
+const int& mtm::IntMatrix::operator()(int i, int j) const
 {
-	return matrix[i][j];
+	return array2D[i][j];
 }
 
-// simple logic functions 
-bool mtm::bigger(int a,int b)
+
+
+bool mtm::bigger(int a, int b)
 {
-	return a>b;
+	return a > b;
 }
-bool mtm::min(int a,int b)
+bool mtm::min(int a, int b)
 {
-	return a<b;
+	return a < b;
 }
-bool mtm::biggerEqual(int a,int b)
+bool mtm::biggerEqual(int a, int b)
 {
-	return a>=b;
+	return a >= b;
 }
-bool mtm::minEqual(int a,int b)
+bool mtm::minEqual(int a, int b)
 {
-	return a<=b;
+	return a <= b;
 }
-bool mtm::isEqual(int a,int b)
+bool mtm::isEqual(int a, int b)
 {
-	return a==b;
+	return a == b;
 }
-bool mtm::notEqual(int a,int b)
+bool mtm::notEqual(int a, int b)
 {
-	return a!=b;
+	return a != b;
 }
 
 mtm::IntMatrix mtm::IntMatrix::operator<(int number)
 {
-    return requiredMatrix(*this,min,number);
+	return requiredMatrix(*this, min, number);
 }
 
 mtm::IntMatrix mtm::IntMatrix::operator<=(int number)
 {
-	return requiredMatrix(*this,minEqual,number);
+	return requiredMatrix(*this, minEqual, number);
 }
 
 mtm::IntMatrix mtm::IntMatrix::operator>=(int number)
 {
-	return requiredMatrix(*this,biggerEqual,number);
+	return requiredMatrix(*this, biggerEqual, number);
 }
 
 mtm::IntMatrix mtm::IntMatrix::operator>(int number)
 {
-	return requiredMatrix(*this,bigger,number);
+	return requiredMatrix(*this, bigger, number);
 }
 
 mtm::IntMatrix mtm::IntMatrix::operator==(int number)
 {
-	return requiredMatrix(*this,isEqual,number);
+	return requiredMatrix(*this, isEqual, number);
 }
 
 mtm::IntMatrix mtm::IntMatrix::operator!=(int number)
 {
-	return requiredMatrix(*this,notEqual,number);
+	return requiredMatrix(*this, notEqual, number);
 }
 
 
-//helper function do the comparison according to the comp function.and return the result
-mtm::IntMatrix mtm::IntMatrix::requiredMatrix(mtm::IntMatrix matrix1, bool (*comp)(int,int),int number) 
+//Helper function do the comparison according to the compare function
+mtm::IntMatrix mtm::IntMatrix::requiredMatrix(mtm::IntMatrix matrix, bool(*compare)(int, int), int number)
 {
-	mtm::IntMatrix result(matrix1.dims);
-	for (int i = 0; i < matrix1.dims.getRow(); i++)
+	mtm::IntMatrix result(matrix.dims);
+
+	for (int i = 0; i < matrix.dims.getRow(); i++)
 	{
-		for (int j = 0; j < matrix1.dims.getCol(); j++)
+		for (int j = 0; j < matrix.dims.getCol(); j++)
 		{
-			if (comp(matrix1.matrix[i][j],number))
+			if (compare(matrix.array2D[i][j], number))
 			{
-				result(i,j) = 1 ;  //operator ()
-			}else
-			{
-				result(i,j) = 0;
+				result(i, j) = 1;  //operator()
 			}
-			
+			else
+			{
+				result(i, j) = 0;
+			}
 		}
-		
 	}
 	return result;
 }
 
-bool mtm::all(IntMatrix matrix1)
+bool mtm::all(IntMatrix matrix)
 {
-	for (int i = 0; i < matrix1.dims.getRow(); i++)
+	for (int i = 0; i < matrix.dims.getRow(); i++)
 	{
-		for (int j = 0; j < matrix1.dims.getCol(); j++)
+		for (int j = 0; j < matrix.dims.getCol(); j++)
 		{
-			if (matrix1(i,j) == 0)
-			return false;
+			if (matrix(i, j) == 0)
+				return false;
 		}
 	}
 	return true;
 }
 
-bool mtm::any(IntMatrix matrix1)
+bool mtm::any(IntMatrix matrix)
 {
-   for (int i = 0; i < matrix1.dims.getRow(); i++)
+	for (int i = 0; i < matrix.dims.getRow(); i++)
 	{
-		for (int j = 0; j < matrix1.dims.getCol(); j++)
+		for (int j = 0; j < matrix.dims.getCol(); j++)
 		{
-			if (matrix1(i,j) != 0)
-			return true;
+			if (matrix(i, j) != 0)
+				return true;
 		}
 	}
 	return false;
 }
 
 
+/* Iterator class */
 
+mtm::IntMatrix::Iterator::Iterator(const IntMatrix* matrix, const Dimensions dims, int index)
+	: matrix(matrix), dims(dims), index(index)
+{}
 
+const int& mtm::IntMatrix::Iterator::operator*() const
+{
+	assert(index >= 0 && index < matrix->size());
+	int row = dims.getRow();
+	return matrix->array2D[(int)index/row][index%row];
+}
+
+mtm::IntMatrix::Iterator& mtm::IntMatrix::Iterator::operator++()
+{
+	++index;
+	return *this;
+}
+
+mtm::IntMatrix::Iterator mtm::IntMatrix::Iterator::operator++(int)
+{
+	Iterator result = *this;
+	++*this;
+	return result;
+}
+
+bool mtm::IntMatrix::Iterator::operator==(const Iterator& it) const
+{
+	assert(this->matrix == it.matrix);
+	return this->index == it.index;
+}
+
+bool mtm::IntMatrix::Iterator::operator!=(const Iterator& it) const
+{
+	return !(*this == it);
+}
+
+mtm::IntMatrix::Iterator::~Iterator()
+{
+	//TODO: Do I need to implement anything here?
+	//I think it should be left empty as the destructor for matrix will handle it
+}

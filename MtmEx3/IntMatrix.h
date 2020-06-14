@@ -26,6 +26,11 @@ namespace mtm
 		iterator begin();
 		iterator end();
 
+		/* const iterator class */
+		class const_iterator;
+		const_iterator begin() const ;
+		const_iterator end() const ;
+
 		IntMatrix(Dimensions dims, int initVal = 0);
 		IntMatrix(const IntMatrix& other);
 		~IntMatrix();
@@ -103,6 +108,26 @@ namespace mtm
 		iterator& operator=(const iterator&) = default;
 		~iterator();
 
+
+	};
+
+	class IntMatrix::const_iterator 
+	{
+		const IntMatrix* matrix;     
+		const Dimensions dims;
+		int index;
+		const_iterator(const IntMatrix* matrix, const Dimensions dims, int index);
+		friend class IntMatrix;
+
+	public:
+	    const int& operator*() const;  
+		const_iterator& operator++();
+		const_iterator operator++(int);
+		bool operator==(const const_iterator& it) const;
+		bool operator!=(const const_iterator& it) const;
+		const_iterator(const const_iterator&) = default;
+		const_iterator& operator=(const const_iterator&) = default;
+		~const_iterator() = default;
 
 	};
 

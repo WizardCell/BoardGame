@@ -57,6 +57,17 @@ mtm::IntMatrix::iterator mtm::IntMatrix::end()
 	return iterator(this, dims, this->size());
 }
 
+mtm::IntMatrix::const_iterator mtm::IntMatrix::begin() const 
+{
+	return const_iterator(this, dims, 0);
+}
+
+mtm::IntMatrix::const_iterator mtm::IntMatrix::end() const
+{
+	return const_iterator(this, dims, this->size());
+}
+
+
 mtm::IntMatrix mtm::IntMatrix::Identity(int size)
 {
 	Dimensions identityDims(size, size);
@@ -315,8 +326,8 @@ mtm::IntMatrix::iterator::iterator(IntMatrix* matrix, const Dimensions dims, int
  int& mtm::IntMatrix::iterator::operator*() const
 {
 	assert(index >= 0 && index < matrix->size());
-	int row = dims.getRow();
-	return matrix->array2D[(int)index/row][index%row];
+	int col = dims.getCol();
+	return matrix->array2D[(int)index/col][index%col];
 }
 
 mtm::IntMatrix::iterator& mtm::IntMatrix::iterator::operator++()
@@ -350,18 +361,39 @@ mtm::IntMatrix::iterator::~iterator()
 }
 
 
-int main ()
-{
-	mtm::Dimensions dim(2 ,3);
-	mtm::IntMatrix mat_2(dim,1);
-	mtm::IntMatrix::iterator it_begin = mat_2.begin();
-	mtm::IntMatrix::iterator it_end = mat_2.end();
-	std::cout << *it_begin << std::endl;
-	*it_begin = 17;
-	std::cout << *it_begin << std::endl;
-	it_begin++;
-	std::cout << *it_begin << std::endl; 
-	std::cout << (it_begin == it_end) << std::endl; 
-	return 0 ;
+/* const Iterator */
+mtm::IntMatrix::const_iterator::const_iterator(const IntMatrix* matrix, const Dimensions dims, int index)
+	: matrix(matrix), dims(dims), index(index)
+{}
 
+ const int& mtm::IntMatrix::const_iterator::operator*() const
+{
+	assert(index >= 0 && index < matrix->size());
+	int col = dims.getCol();
+	return matrix->array2D[(int)index/col][index%col];
 }
+
+mtm::IntMatrix::const_iterator& mtm::IntMatrix::const_iterator::operator++()
+{
+	++index;
+	return *this;
+}
+
+mtm::IntMatrix::const_iterator mtm::IntMatrix::const_iterator::operator++(int)
+{
+	const_iterator result = *this;
+	++*this;
+	return result;
+}
+
+bool mtm::IntMatrix::const_iterator::operator==(const const_iterator& it) const
+{
+	assert(this->matrix == it.matrix);
+	return this->index == it.index;
+}
+
+bool mtm::IntMatrix::const_iterator::operator!=(const const_iterator& it) const
+{
+	return !(*this == it);
+}
+

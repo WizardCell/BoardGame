@@ -317,7 +317,7 @@ bool mtm::any(IntMatrix matrix)
 }
 
 
-/* Iterator class */
+/* Non-Constant iterator class */
 
 mtm::IntMatrix::iterator::iterator(IntMatrix* matrix, const Dimensions dims, int index)
 	: matrix(matrix), dims(dims), index(index)
@@ -354,14 +354,9 @@ bool mtm::IntMatrix::iterator::operator!=(const iterator& it) const
 	return !(*this == it);
 }
 
-mtm::IntMatrix::iterator::~iterator()
-{
-	//TODO: Do I need to implement anything here?
-	//I think it should be left empty as the destructor for matrix will handle it
-}
 
+/* Constant iterator class */
 
-/* const Iterator */
 mtm::IntMatrix::const_iterator::const_iterator(const IntMatrix* matrix, const Dimensions dims, int index)
 	: matrix(matrix), dims(dims), index(index)
 {}
@@ -370,7 +365,7 @@ mtm::IntMatrix::const_iterator::const_iterator(const IntMatrix* matrix, const Di
 {
 	assert(index >= 0 && index < matrix->size());
 	int col = dims.getCol();
-	return matrix->array2D[(int)index/col][index%col];
+	return matrix->array2D[(int)index / col][index % col];
 }
 
 mtm::IntMatrix::const_iterator& mtm::IntMatrix::const_iterator::operator++()

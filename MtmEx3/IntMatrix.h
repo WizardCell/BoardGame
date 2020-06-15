@@ -15,8 +15,6 @@ namespace mtm
 		int** array2D;
 		Dimensions dims;
 
-		//TODO: shouldn't be a public function?
-		// NO , i just need to use this function(for internal impelementaion) and not external user.(helper function)
 		static IntMatrix requiredMatrix(IntMatrix matrix, bool(*compare)(int, int), int number);
 
 	public:
@@ -80,7 +78,7 @@ namespace mtm
 	IntMatrix operator+(int number, const IntMatrix& matrix);
 	std::ostream& operator<<(std::ostream& os, const IntMatrix& matrix);
 
-	/* simple logic functions */
+	/* Simple logic functions */
 	bool all(IntMatrix matrix);
 	bool any(IntMatrix matrix);
 	bool bigger(int a, int b);
@@ -90,27 +88,28 @@ namespace mtm
 	bool isEqual(int a, int b);
 	bool notEqual(int a, int b);
 
+	/* Non-Const iterator */
 	class IntMatrix::iterator
 	{
-		IntMatrix* matrix;     // we dont want const matrix ( const matrixes are handled in ::const iterator)
+		IntMatrix* matrix;
 		Dimensions dims;
 		int index;
 		iterator(IntMatrix* matrix, const Dimensions dims, int index);
 		friend class IntMatrix;
 
 	public:
-	    int& operator*() const;  //u cant return const , it is normal iterator not the const iterator.
+	    int& operator*() const;
 		iterator& operator++();
 		iterator operator++(int);
 		bool operator==(const iterator& it) const;
 		bool operator!=(const iterator& it) const;
 		iterator(const iterator&) = default;
 		iterator& operator=(const iterator&) = default;
-		~iterator();
-
+		~iterator() = default;
 
 	};
 
+	/* Constant iterator */
 	class IntMatrix::const_iterator 
 	{
 		const IntMatrix* matrix;     

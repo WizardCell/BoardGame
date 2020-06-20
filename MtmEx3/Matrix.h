@@ -13,6 +13,29 @@ namespace mtm
         private:
             T** array2D;
             Dimensions dims;
+
+            // helper function for comparing according to compare function.
+            // we assume that T is compareable.
+            static Matrix requiredMatrix(Matrix matrix, bool(*compare)(T, T), T value)
+            {
+                Matrix<bool> result(matrix.dims);
+
+	            for (int i = 0; i < matrix.dims.getRow(); i++)
+	            {
+		            for (int j = 0; j < matrix.dims.getCol(); j++)
+		            {
+			            if (compare(matrix.array2D[i][j], value))
+			            {
+				            result(i, j) = true;  //operator()
+			            }
+			            else
+			            {
+				            result(i, j) = false;
+			            }
+		            }
+	            }
+	            return result;
+            }
         public:
             /* The Exceptions Classes First */
             class AccessIllegalElement
@@ -40,7 +63,7 @@ namespace mtm
             };
             /* End of the exception classes */
 
-
+            //constructor
             Matrix(Dimensions dim, T value = T()): dims(dim.getRow(),dim.getCol())
             {
                 
@@ -205,6 +228,56 @@ namespace mtm
 	            }
 	            return (*this);
             }                       
+             
+             //Operator () , for const and non const matrixes
+             //No assumption on T
+            T& Matrix::operator()(int i, int j)
+            {
+                if (i < 0 or i > this->height() or j<0 or j > this->width())
+                {
+                    throw AccessIllegalElement();
+                }
+	            return array2D[i][j];
+            }
+            //THE CONST version 
+            const T& Matrix::operator()(int i, int j) const 
+            {
+                if (i < 0 or i > this->height() or j<0 or j > this->width())
+                {
+                    throw AccessIllegalElement();
+                }
+	            return array2D[i][j];
+            }
+
+
+        /* the logic functions */
+        // Assuming that T has the the logic functions.
+        Matrix Matrix::operator<(T value)
+        {
+	        return requiredMatrix(*this, min, value);
+        }
+        Matrix Matrix::operator<=(T value)
+        {
+	        return requiredMatrix(*this, minEqual, value);
+        }
+        Matrix Matrix::operator==(T value)
+        {
+	        return requiredMatrix(*this,isEqual, value);
+        }
+        Matrix Matrix::operator!=(T value)
+        {
+	        return requiredMatrix(*this, notEqual, value);
+        }
+        Matrix Matrix::operator>(T value)
+        {
+	        return requiredMatrix(*this, bigger, value);
+        }
+        Matrix Matrix::operator>=(T value)
+        {
+	        return requiredMatrix(*this, biggerEqual, value);
+        }
+        //  end of logic functions  //
+
 
 
 
@@ -255,11 +328,82 @@ namespace mtm
     {
         return (matrix + value);
     }
+    /* endof opeartor + */
+
+
     template<class T>
     std::ostream& operator<<(std::ostream& os, const Matrix<T>& matrix)
      {
-      //need to finish iterator
+     // need to finish iterator class
      }
+
+
+     /*simple logic GENERIC functions */
+    template<class T>
+    bool bigger(T a, T b)
+    {
+        return a > b;
+    }
+    template<class T>
+	bool biggerEqual(T a, T b)
+    {
+        return a >= b ;
+    }
+    template<class T>
+	bool min(T a, T b)
+    {
+        return a < b ;
+    }
+    template<class T>
+	bool minEqual(T a, T b)
+    {
+        return a <= b;
+    }
+    template<class T>
+	bool isEqual(T a, T b)
+    {
+        return a == b ;
+    }
+    template<class T>
+	bool notEqual(T a, T b)
+    {
+        return a != b ; 
+    }
+    /* end of simple generic functions */
+    
+    //all function
+    //return false if one of the matrix's value is false
+    //we assume that T has casting to boolean
+    template<class T>
+    bool all(Matrix<T> matrix)
+    {
+	    for (int i = 0; i < matrix.height(); i++)
+	    {
+		    for (int j = 0; j < matrix.width(); j++)
+		    {
+			    if (matrix(i, j) == false)
+				    return false;
+		    }
+	    }
+	    return true;
+    }
+
+    //any function
+    //return true if atleast one of the matrix's value is not false
+    //we assume that T has casting to boolean
+    template<class T>
+    bool any(Matrix<T> matrix)
+    {
+	    for (int i = 0; i < matrix.height(); i++)
+	    {
+		    for (int j = 0; j < matrix.width(); j++)
+		    {
+			    if (matrix(i, j) != false)
+				    return true;
+		    }
+	    }
+	    return false;
+    }
     
 } // namespace mtm
 

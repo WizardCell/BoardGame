@@ -296,7 +296,7 @@ namespace mtm
     };
 
     // operator + 
-    // we assume that T has operator + (line 193)
+    // we assume that T has operator + 
     template<class T>
     mtm::Matrix<T> operator+(const mtm::Matrix<T>& matrix1, const mtm::Matrix<T>& matrix2)
     {
@@ -404,7 +404,7 @@ namespace mtm
 	    }
 	    return false;
     }
-    
+
 } // namespace mtm
 
 #endif 

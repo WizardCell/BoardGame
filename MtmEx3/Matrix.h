@@ -4,6 +4,38 @@
 #include <iostream>
 #include "Auxiliaries.h"
 
+/*simple logic GENERIC functions */
+    template<class T>
+    bool bigger(T a, T b)
+    {
+        return a > b;
+    }
+    template<class T>
+	bool biggerEqual(T a, T b)
+    {
+        return a >= b ;
+    }
+    template<class T>
+	bool min(T a, T b)
+    {
+        return a < b ;
+    }
+    template<class T>
+	bool minEqual(T a, T b)
+    {
+        return a <= b;
+    }
+    template<class T>
+	bool isEqual(T a, T b)
+    {
+        return a == b ;
+    }
+    template<class T>
+	bool notEqual(T a, T b)
+    {
+        return a != b ; 
+    }
+
 
 namespace mtm
 {
@@ -16,7 +48,7 @@ namespace mtm
 
             // helper function for comparing according to compare function.
             // we assume that T is compareable.
-            static Matrix requiredMatrix(Matrix matrix, bool(*compare)(T, T), T value)
+            static Matrix<bool> requiredMatrix(Matrix matrix, bool(*compare)(T, T), T value)
             {
                 Matrix<bool> result(matrix.dims);
 
@@ -184,11 +216,7 @@ namespace mtm
 	                return transposedMatrix;
             }
             
-            /* friend functions */
-            template<class U>
-            friend std::ostream& operator<<(std::ostream& os, const Matrix<U>& matrix);
-            template<class F>
-            friend Matrix<T> operator+(const Matrix<F>& matrix1, const Matrix<T>& matrix2);
+           
             
             //operator - unari
             // we assume that T has  - unari;
@@ -231,7 +259,7 @@ namespace mtm
              
              //Operator () , for const and non const matrixes
              //No assumption on T
-            T& Matrix::operator()(int i, int j)
+            T& operator()(int i, int j)
             {
                 if (i < 0 or i > this->height() or j<0 or j > this->width())
                 {
@@ -240,7 +268,7 @@ namespace mtm
 	            return array2D[i][j];
             }
             //THE CONST version 
-            const T& Matrix::operator()(int i, int j) const 
+            const T& operator()(int i, int j) const 
             {
                 if (i < 0 or i > this->height() or j<0 or j > this->width())
                 {
@@ -252,31 +280,37 @@ namespace mtm
 
         /* the logic functions */
         // Assuming that T has the the logic functions.
-        Matrix Matrix::operator<(T value)
+        Matrix<bool> operator<(T value)
         {
 	        return requiredMatrix(*this, min, value);
         }
-        Matrix Matrix::operator<=(T value)
+        Matrix<bool> operator<=(T value)
         {
 	        return requiredMatrix(*this, minEqual, value);
         }
-        Matrix Matrix::operator==(T value)
+        Matrix<bool> operator==(T value)
         {
 	        return requiredMatrix(*this,isEqual, value);
         }
-        Matrix Matrix::operator!=(T value)
+        Matrix<bool> operator!=(T value)
         {
 	        return requiredMatrix(*this, notEqual, value);
         }
-        Matrix Matrix::operator>(T value)
+        Matrix<bool> operator>(T value)
         {
 	        return requiredMatrix(*this, bigger, value);
         }
-        Matrix Matrix::operator>=(T value)
+        Matrix<bool> operator>=(T value)
         {
 	        return requiredMatrix(*this, biggerEqual, value);
         }
         //  end of logic functions  //
+        
+        /* Iterator class*/
+        class iterator;
+        iterator begin()  ;
+        iterator end()  ;
+        
 
 
 
@@ -295,23 +329,25 @@ namespace mtm
 
     };
 
+
     // operator + 
     // we assume that T has operator + 
     template<class T>
     mtm::Matrix<T> operator+(const mtm::Matrix<T>& matrix1, const mtm::Matrix<T>& matrix2)
     {
 
-        if (matrix1.dims != matrix1.dims)
+       if (matrix1.width() != matrix2.width() or matrix1.height()!=matrix2.height())
         {
-            throw mtm::Matrix<T>::DimensionMismatch(); // need to give matrixes dims 
+            throw typename mtm::Matrix<T>::DimensionMismatch(); // need to give matrixes dims 
         }
-        mtm::Matrix<T> result(matrix1.dims);
+        Dimensions new_dim(matrix1.height(),matrix1.width());
+        mtm::Matrix<T> result(new_dim);
 
-	    for (int i = 0; i < matrix1.dims.getRow(); i++)
+	    for (int i = 0; i < matrix1.height(); i++)
 	    {
-		    for (int j = 0; j < matrix1.dims.getCol(); j++)
+		    for (int j = 0; j < matrix1.width(); j++)
 		    {
-			    result.array2D[i][j] = matrix1.array2D[i][j] + matrix2.array2D[i][j];
+			    result(i,j) = matrix1(i,j) + matrix2(i,j);
 		    }
 	    }
 	        return result;
@@ -332,44 +368,14 @@ namespace mtm
 
 
     template<class T>
-    std::ostream& operator<<(std::ostream& os, const Matrix<T>& matrix)
+    std::ostream& operator<<(std::ostream& os,  Matrix<T>& matrix) //remember to put back the const when const iterator is done//
      {
-     // need to finish iterator class
+        typename mtm::Matrix<T>::iterator it_begin = matrix.begin();
+        typename mtm::Matrix<T>::iterator it_end = matrix.end();
+        return printMatrix(os,it_begin,it_end,matrix.width());
      }
 
 
-     /*simple logic GENERIC functions */
-    template<class T>
-    bool bigger(T a, T b)
-    {
-        return a > b;
-    }
-    template<class T>
-	bool biggerEqual(T a, T b)
-    {
-        return a >= b ;
-    }
-    template<class T>
-	bool min(T a, T b)
-    {
-        return a < b ;
-    }
-    template<class T>
-	bool minEqual(T a, T b)
-    {
-        return a <= b;
-    }
-    template<class T>
-	bool isEqual(T a, T b)
-    {
-        return a == b ;
-    }
-    template<class T>
-	bool notEqual(T a, T b)
-    {
-        return a != b ; 
-    }
-    /* end of simple generic functions */
     
     //all function
     //return false if one of the matrix's value is false
@@ -404,6 +410,67 @@ namespace mtm
 	    }
 	    return false;
     }
+    template<class T>
+    typename Matrix<T>::iterator Matrix<T>::begin() 
+    {
+     return iterator(this,dims,0);
+    }
+
+    template<class T>
+    typename Matrix<T>::iterator Matrix<T>::end() 
+    {
+     return iterator(this,dims,this->size());
+    }
+
+
+    /* Iterator class*/
+    template<class T>
+    class Matrix<T>::iterator
+	{
+		Matrix<T>* matrix;
+		Dimensions dims;
+		int index;
+		iterator(Matrix* matrix, const Dimensions dims, int index)
+        : matrix(matrix) , dims(dims),index(index)
+        {}
+
+		friend class Matrix<T>;
+
+	public:
+	    T& operator*() const
+        {
+            if (index < 0 or index > matrix->size())
+            {
+                throw mtm::Matrix<T>::AccessIllegalElement();
+            }
+            int col = dims.getCol();
+	        return matrix->array2D[(int)index/col][index%col];
+        }
+		iterator& operator++()
+        {
+            ++index;
+            return *this;
+        }
+		iterator operator++(int)
+        {
+            iterator result = *this;
+	        ++*this;
+	        return result;
+        }
+		bool operator==(const iterator& it) const
+        {
+            //check self operator == (what kind of exception should throw)
+            return this->index == it.index;
+        }
+		bool operator!=(const iterator& it) const
+        {
+            return !(*this == it);
+        }
+		iterator(const iterator&) = default;
+		iterator& operator=(const iterator&) = default;
+		~iterator() = default;
+
+	};
 
 } // namespace mtm
 

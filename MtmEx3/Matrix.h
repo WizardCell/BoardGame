@@ -411,7 +411,7 @@ namespace mtm
 
 
     template<class T>
-    std::ostream& operator<<(std::ostream& os,  Matrix<T>& matrix) //remember to put back the const when const iterator is done//
+    std::ostream& operator<<(std::ostream& os,  Matrix<T> matrix) //remember to put back the const when const iterator is done//
      {
         typename mtm::Matrix<T>::iterator it_begin = matrix.begin();
         typename mtm::Matrix<T>::iterator it_end = matrix.end();

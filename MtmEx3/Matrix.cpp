@@ -5,6 +5,7 @@ int main()
     mtm::Matrix<int> m(d,3);
     mtm::Matrix<bool> m2= m>4;
     std::cout << m2;
+    std::cout << (m>4); 
 
     return 0;
 }

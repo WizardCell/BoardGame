@@ -147,6 +147,10 @@ namespace mtm
                 }
                 catch(const std::bad_alloc& e)
                 {
+                    for (int i = 0; i < counter; i++)
+                    {
+                        delete[] array2D[i];
+                    }
                     throw e;
                 }
                 
@@ -174,10 +178,25 @@ namespace mtm
             Matrix& operator=(const Matrix& matrix)
             {
                T** temp = new T*[matrix.dims.getRow()];
-               for (int i = 0; i < matrix.dims.getRow(); i++)
-	            {
-		            temp[i] = new T[matrix.dims.getCol()];
-	            }
+               int counter =0 ;
+               try
+               {
+                   for (int i = 0; i < matrix.dims.getRow(); i++)
+	                {
+		                temp[i] = new T[matrix.dims.getCol()];
+                        counter++;
+	                }
+               }
+               catch(const std::bad_alloc& e)
+               {
+                   for (int i = 0; i < counter; i++)
+                   {
+                       delete[] temp[i];
+                   }
+                   throw e;
+               }
+               
+               
                 for (int i = 0; i < matrix.dims.getRow(); i++)
 	            {
 		              for (int j = 0; j < matrix.dims.getCol(); j++)

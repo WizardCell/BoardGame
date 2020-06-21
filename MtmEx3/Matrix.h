@@ -93,6 +93,7 @@ namespace mtm
             {
                  //TODO
             };
+
             /* End of the exception classes */
 
             //constructor
@@ -104,11 +105,24 @@ namespace mtm
                     throw IllegalInitialization();
                 }
                 array2D = new T*[dims.getRow()];
-	            for (int i = 0; i < dims.getRow(); i++)
-	            {
+                int counter = 0;
+                try     
+                {
+                   for (int i = 0; i < dims.getRow(); i++)
+	               {
 		            array2D[i] = new T[dims.getCol()];
-	            }
-
+                    counter++;
+	               } 
+                }
+                catch(const std::bad_alloc& e)  // here means an allocation failed . we need to free the ones we allocated.
+                {
+                    for (int i = 0; i < counter; i++)
+                    {
+                        delete [] array2D[i];
+                    }
+                    throw e;
+                }
+                
 	            for (int i = 0; i < dims.getRow(); i++)
 	            {
 		            for (int j = 0; j < dims.getCol(); j++)
@@ -122,10 +136,20 @@ namespace mtm
             Matrix(const Matrix& other) : dims(other.dims.getRow(), other.dims.getCol())
             {
                 array2D = new T*[dims.getRow()];
-	            for (int i = 0; i < dims.getRow(); i++)
-	            {
-		            array2D[i] = new T[dims.getCol()];
-	            }
+                int counter = 0 ; 
+                try
+                {
+                    for (int i = 0; i < dims.getRow(); i++)
+	                {
+		                array2D[i] = new T[dims.getCol()];
+                        counter++;
+	                }
+                }
+                catch(const std::bad_alloc& e)
+                {
+                    throw e;
+                }
+                
 	            for (int i = 0; i < dims.getRow(); i++)
 	            {
 		              for (int j = 0; j < dims.getCol(); j++)

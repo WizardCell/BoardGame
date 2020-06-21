@@ -56,7 +56,7 @@ namespace mtm
 		IntMatrix& operator=(const IntMatrix& matrix);
 		IntMatrix& operator+=(int number);
 
-		friend std::ostream& operator<<(std::ostream& os, const IntMatrix& matrix);
+		friend std::ostream& operator<<(std::ostream& os, const IntMatrix matrix);
 
 		int& operator()(int i, int j);
 		const int& operator()(int i, int j) const;
@@ -76,7 +76,7 @@ namespace mtm
 	IntMatrix operator+(const IntMatrix& matrix1, const IntMatrix& matrix2);
 	IntMatrix operator+(const IntMatrix& matrix, int number);
 	IntMatrix operator+(int number, const IntMatrix& matrix);
-	std::ostream& operator<<(std::ostream& os, const IntMatrix& matrix);
+	std::ostream& operator<<(std::ostream& os, const IntMatrix matrix);
 
 	/* Simple logic functions */
 	bool all(IntMatrix matrix);

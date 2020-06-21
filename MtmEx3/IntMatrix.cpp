@@ -182,7 +182,7 @@ mtm::IntMatrix mtm::operator+(int number, const IntMatrix& matrix)
 	return (matrix + number);
 }
 
-std::ostream& mtm::operator<<(std::ostream& os, const mtm::IntMatrix& matrix)
+std::ostream& mtm::operator<<(std::ostream& os, const mtm::IntMatrix matrix)
 {
 	int col = matrix.dims.getCol();
 	int row = matrix.dims.getRow();

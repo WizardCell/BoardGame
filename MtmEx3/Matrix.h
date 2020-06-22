@@ -378,11 +378,6 @@ namespace mtm
             return const_iterator(this, dims, this->size());
         }
 
-        class Function
-        {
-        public:
-         T operator()(T value) ;
-        };
 
         // apply the funcor on the matrix and return updted function .
         // we assume that the functor take T return T 

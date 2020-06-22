@@ -35,6 +35,7 @@
     {
         return a != b ; 
     }
+    // end logic functions // 
 
 
 namespace mtm
@@ -73,7 +74,7 @@ namespace mtm
             class AccessIllegalElement
             {
                 public:
-                std::string what()
+                std::string what() const 
                 {
                     std::string s = "Mtm matrix error: An attempt to access an illegal element";
                     return s;
@@ -82,7 +83,7 @@ namespace mtm
             class IllegalInitialization
             {
                 public:
-                std::string what()
+                std::string what() const 
                 {
                     std::string s = "Mtm matrix error: Illegal initialization values";
                     return s;
@@ -91,7 +92,16 @@ namespace mtm
             };
             class DimensionMismatch
             {
-                 //TODO
+                Dimensions left_dims;
+                Dimensions right_dims;
+                public:
+                DimensionMismatch(mtm::Dimensions left_dim, mtm::Dimensions right_dim):
+                left_dims(left_dim), right_dims(right_dim) {}
+                std::string what() const 
+                {
+                    std::string out = "Mtm matrix error: Dimension mismatch: ";
+                    return out += left_dims.toString() + " " + right_dims.toString();
+                }
             };
 
             /* End of the exception classes */
@@ -167,7 +177,7 @@ namespace mtm
             {
                 for (int i = 0; i < dims.getRow(); i++)
                 {
-                 delete[] array2D[i];
+                    delete[] array2D[i];
                 }
                 delete[]  array2D;
             
@@ -213,18 +223,19 @@ namespace mtm
              // creating diagonal matrix 
              // the diagonal fills with the value , anywhere else with the deafuld constructor.
              // we assume that  T HAS the default constructor and  operator =
-            static Matrix Diagonal(Dimensions dim ,T value)
+            static Matrix Diagonal(int dim ,T value)
             {
-                if ( dim.getCol() <=0 or dim.getRow()<=0)
+                if ( dim<=0 )
                 {
                     throw IllegalInitialization();
                 }
-                Matrix<T> matrix(dim);
-                for (int i = 0; i < dim.getRow(); i++)
+                Dimensions new_dim(dim,dim);
+                Matrix<T> matrix(new_dim);
+                for (int i = 0; i < dim; i++)
                 {
                    matrix.array2D[i][i] = value;
                 }
-                
+                return matrix;
             }
             /*simple functions */
 
@@ -282,7 +293,9 @@ namespace mtm
             {
                 if (this->dims != matrix.dims)
                 {
-                    throw DimensionMismatch(); /////////////
+                    Dimensions left_dim(this->height(),this->width());
+                    Dimensions right_dim(matrix.height(),matrix.width());
+                    throw DimensionMismatch(left_dim,right_dim); 
                 }
                 return operator+(*this,-matrix);
             }
@@ -304,7 +317,7 @@ namespace mtm
              //No assumption on T
             T& operator()(int i, int j)
             {
-                if (i < 0 or i > this->height() or j<0 or j > this->width())
+                if (i < 0 or i >= this->height() or j<0 or j >= this->width())
                 {
                     throw AccessIllegalElement();
                 }
@@ -313,7 +326,7 @@ namespace mtm
             //THE CONST version 
             const T& operator()(int i, int j) const 
             {
-                if (i < 0 or i > this->height() or j<0 or j > this->width())
+                if (i < 0 or i >= this->height() or j < 0 or j >= this->width())
                 {
                     throw AccessIllegalElement();
                 }
@@ -323,7 +336,7 @@ namespace mtm
 
         /* the logic functions */
         // Assuming that T has the the logic functions.
-        Matrix<bool> operator<(T value)
+        Matrix<bool> operator<(T value) 
         {
 	        return requiredMatrix(*this, min, value);
         }
@@ -351,8 +364,45 @@ namespace mtm
         
         /* Iterator class*/
         class iterator;
-        iterator begin()  ;
-        iterator end()  ;
+        iterator begin();
+        iterator end();
+
+        /* const iterator class */
+        class const_iterator;
+        const_iterator begin() const
+        {
+            return const_iterator(this, dims, 0);
+        }
+        const_iterator end() const
+        {
+            return const_iterator(this, dims, this->size());
+        }
+
+        class Function
+        {
+        public:
+         T operator()(T value) ;
+        };
+
+        // apply the funcor on the matrix and return updted function .
+        // we assume that the functor take T return T 
+        template<class U >
+        Matrix apply(U value) const                  //LOL can not beleive this shit worked 
+        {
+            Matrix result(*this);
+            for (int i = 0; i < dims.getRow(); i++)
+            {
+                for (int j = 0; j < dims.getCol(); j++)
+                {
+                    result(i,j) = value((*this)(i,j));
+                }
+                
+            }
+            return result ; 
+            
+        }
+
+        
         
 
 
@@ -379,9 +429,11 @@ namespace mtm
     mtm::Matrix<T> operator+(const mtm::Matrix<T>& matrix1, const mtm::Matrix<T>& matrix2)
     {
 
-       if (matrix1.width() != matrix2.width() or matrix1.height()!=matrix2.height())
+       if (matrix1.width() != matrix2.width() || matrix1.height() != matrix2.height())
         {
-            throw typename mtm::Matrix<T>::DimensionMismatch(); // need to give matrixes dims 
+            Dimensions left_dim(matrix1.height(),matrix1.width());
+            Dimensions right_dim(matrix2.height(),matrix2.width());
+            throw typename mtm::Matrix<T>::DimensionMismatch(left_dim,right_dim); 
         }
         Dimensions new_dim(matrix1.height(),matrix1.width());
         mtm::Matrix<T> result(new_dim);
@@ -396,12 +448,15 @@ namespace mtm
 	        return result;
     }
 
+    // operator +  with T value
+    // we assume that T has operator +
     template<class T>
     Matrix<T> operator+(const Matrix<T>& matrix,T value)
     {
         return Matrix<T>(matrix) += value;
     }
 
+    // we assume that T has operator +
     template<class T>
     Matrix<T> operator+(T value,const Matrix<T>& matrix)
     {
@@ -411,10 +466,10 @@ namespace mtm
 
 
     template<class T>
-    std::ostream& operator<<(std::ostream& os,  Matrix<T> matrix) //remember to put back the const when const iterator is done//
+    std::ostream& operator<<(std::ostream& os, const Matrix<T> matrix) 
      {
-        typename mtm::Matrix<T>::iterator it_begin = matrix.begin();
-        typename mtm::Matrix<T>::iterator it_end = matrix.end();
+        typename mtm::Matrix<T>::const_iterator it_begin = matrix.begin();
+        typename mtm::Matrix<T>::const_iterator it_end = matrix.end();
         return printMatrix(os,it_begin,it_end,matrix.width());
      }
 
@@ -513,7 +568,55 @@ namespace mtm
 		iterator& operator=(const iterator&) = default;
 		~iterator() = default;
 
-	};
+	}; // end of class iterator
+
+    /* class const iterator */
+    template<class T>
+    class Matrix<T>::const_iterator
+	{
+		const Matrix<T>* matrix;
+		Dimensions dims;
+		int index;
+		const_iterator(const Matrix* matrix, const Dimensions dims, int index)
+        : matrix(matrix) , dims(dims),index(index)
+        {}
+		friend class Matrix<T>;
+
+	public:
+	    const T& operator*() const
+        {
+            if (index < 0 or index > matrix->size() or *this==this->matrix->end())
+            {
+                throw mtm::Matrix<T>::AccessIllegalElement();
+            }
+            int col = dims.getCol();
+	        return matrix->array2D[(int)index/col][index%col];
+        }
+		const_iterator& operator++()
+        {
+            ++index;
+            return *this;
+        }
+		const_iterator operator++(int)
+        {
+            iterator result = *this;
+	        ++*this;
+	        return result;
+        }
+		bool operator==(const const_iterator& it) const
+        {
+            //check self operator == (what kind of exception should throw)
+            return this->index == it.index;
+        }
+		bool operator!=(const const_iterator& it) const
+        {
+            return !(*this == it);
+        }
+		const_iterator(const const_iterator&) = default;
+		const_iterator& operator=(const const_iterator&) = default;
+		~const_iterator() = default;
+    };
+
 
 } // namespace mtm
 

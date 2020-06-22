@@ -8,6 +8,16 @@ class Square {
           return val*val; 
     } 
 }; 
+class divide { 
+    public: 
+        int operator()(int val){ 
+          return val/2; 
+    } 
+}; 
+int f(int val)
+{
+    return val +100;
+}
 
 int main(){
     mtm::Dimensions dim_1(2,3);
@@ -49,9 +59,12 @@ int main(){
     } catch(mtm::Matrix<int>::AccessIllegalElement& e){
         std::cout<<e.what()<<std::endl;
     }
+    
     try{
         const mtm::Matrix<int> mat_1(dim_1,4);
         const mtm::Matrix<int> mat_2=mat_1.apply(Square());
+        const mtm::Matrix<int> mat_3=mat_1.apply(f);
+        std::cout<<mat_3 << std::endl;
         std::cout<<mat_1;
         std::cout<<mat_2(1,2)<<std::endl;
         mtm::Matrix<int>::const_iterator it = mat_2.end();

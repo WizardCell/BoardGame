@@ -382,14 +382,14 @@ namespace mtm
         // apply the funcor on the matrix and return updted function .
         // we assume that the functor take T return T 
         template<class U >
-        Matrix apply(U value) const                  //LOL can not beleive this shit worked 
+        Matrix apply(U functor) const                   
         {
             Matrix result(*this);
             for (int i = 0; i < dims.getRow(); i++)
             {
                 for (int j = 0; j < dims.getCol(); j++)
                 {
-                    result(i,j) = value((*this)(i,j));
+                    result(i,j) = functor((*this)(i,j));
                 }
                 
             }

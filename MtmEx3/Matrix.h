@@ -130,17 +130,28 @@ namespace mtm
                     {
                         delete [] array2D[i];
                     }
+                    delete [] array2D;
                     throw e;
                 }
-                
-	            for (int i = 0; i < dims.getRow(); i++)
-	            {
-		            for (int j = 0; j < dims.getCol(); j++)
-		               {
-			            array2D[i][j] = value;
-		               }
-	            }
-
+                try // in case operator = for the T fails
+                {
+                    for (int i = 0; i < dims.getRow(); i++)
+	                {
+		                for (int j = 0; j < dims.getCol(); j++)
+		                {
+			                array2D[i][j] = value;
+		                }
+	                }
+                }
+                catch(...)
+                {
+                    for (int i = 0; i < dim.getRow(); i++)
+                    {
+                        delete[] array2D[i];
+                    }
+                    delete[]  array2D;
+                    throw;
+                }
             }
 
             Matrix(const Matrix& other) : dims(other.dims.getRow(), other.dims.getCol())
@@ -161,16 +172,30 @@ namespace mtm
                     {
                         delete[] array2D[i];
                     }
+                    delete[] array2D;
                     throw e;
                 }
-                
-	            for (int i = 0; i < dims.getRow(); i++)
-	            {
-		              for (int j = 0; j < dims.getCol(); j++)
-		            {
-			            array2D[i][j] = other.array2D[i][j];    //assuming that T has operator = 
-		            }
-	            }                                                        
+                try
+                {
+                    for (int i = 0; i < dims.getRow(); i++)
+	                {
+		                for (int j = 0; j < dims.getCol(); j++)
+		                {
+			                array2D[i][j] = other.array2D[i][j];    //assuming that T has operator = 
+		                }   
+	                }                                   
+                }
+                catch(...)
+                 {
+                    for (int i = 0; i < dims.getRow(); i++)
+                    {
+                        delete[] array2D[i];
+                    }
+                    delete[]  array2D;
+                    throw;
+                 }
+                 
+	                                  
             }
 
             ~Matrix()
@@ -203,18 +228,30 @@ namespace mtm
                    {
                        delete[] temp[i];
                    }
+                   delete[] temp;
                    throw e;
                }
                
-               
+               try
+               {
                 for (int i = 0; i < matrix.dims.getRow(); i++)
 	            {
 		              for (int j = 0; j < matrix.dims.getCol(); j++)
 		            {
 			            temp[i][j] = matrix.array2D[i][j];     
 		            }
-	            }
-                delete[]  array2D;
+	            }   
+               }
+               catch(...)
+               {
+                   for (int i = 0; i < matrix.dims.getRow(); i++)
+                    {
+                        delete[] temp[i];
+                    }
+                    delete[]  temp;
+                    throw;
+               }
+                delete[]  array2D; //from this point nothing can fail
                 array2D = temp;
                 dims = matrix.dims;
                 return (*this);                                                    

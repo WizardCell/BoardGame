@@ -23,6 +23,7 @@ int main(){
     mtm::Dimensions dim_1(2,3);
     mtm::Dimensions dim_2(-2,3);
     mtm::Dimensions dim_3(3,2);
+    mtm::Dimensions dim_4(0,0);
     try{
         const mtm::Matrix<std::string> mat_1(dim_2,"str1");
     } catch(mtm::Matrix<std::string>::IllegalInitialization& e){
@@ -72,4 +73,44 @@ int main(){
     } catch(mtm::Matrix<int>::AccessIllegalElement& e){
         std::cout<<e.what()<<std::endl;
     }
+    try
+    {
+        mtm::Matrix<std::string> m(dim_4,"aamer");
+    }
+    catch(const mtm::Matrix<std::string>::IllegalInitialization& e)
+    {
+        std::cout << e.what() << '\n';
+    }
+    try
+    {
+        mtm::Matrix<std::string> m(dim_1,"aamer");
+        m += std::string("the king");
+        std::cout<<m << std::endl;
+        mtm::Matrix<std::string> m2(dim_1,"HI");
+        std::cout<< m2+m << std::endl ; 
+        mtm::Matrix<int> m3 = mtm::Matrix<int>::Diagonal(3,6);
+        mtm::Matrix<int> m4 = mtm::Matrix<int>::Diagonal(4,5);
+        std::cout << (m3<=6) << std::endl ;
+        std::cout << (m3 > 0)<< std::endl;
+        std::cout << (m4 == 5)<< std::endl;
+        std::cout << m3.apply(divide())<< std::endl;
+        std::cout << (m3+m4)<< std::endl;
+    }
+    catch(const mtm::Matrix<int>::DimensionMismatch& e)
+    {
+        std::cout << e.what() << '\n';
+    }
+    try
+    {
+        const mtm::Matrix<int> mat_1(dim_1);
+        mtm::Matrix<int>::const_iterator ha=mat_1.end();
+        std::cout << *ha ;
+    }
+    catch(const mtm::Matrix<int>::AccessIllegalElement& e)
+    {
+        std::cout << e.what() << '\n';
+    }
+    
+    
+    
 }

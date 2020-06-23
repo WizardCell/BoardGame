@@ -1,11 +1,9 @@
 #ifndef EX3_INTMATRIX_H
 #define EX3_INTMATRIX_H
+
 #include <string>
 #include <iostream>
 #include "Auxiliaries.h"
-
-
-
 
 namespace mtm
 {

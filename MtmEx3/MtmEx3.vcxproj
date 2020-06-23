@@ -126,15 +126,19 @@
     <None Include=".gitignore" />
     <None Include="README.md" />
     <None Include="test_partA_output" />
+    <None Include="test_partB_output" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Auxiliaries.cpp" />
     <ClCompile Include="IntMatrix.cpp" />
+    <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="test_partA.cpp" />
+    <ClCompile Include="test_partB.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Auxiliaries.h" />
     <ClInclude Include="IntMatrix.h" />
+    <ClInclude Include="Matrix.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

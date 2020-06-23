@@ -18,6 +18,7 @@
     <None Include=".gitignore" />
     <None Include="README.md" />
     <None Include="test_partA_output" />
+    <None Include="test_partB_output" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Auxiliaries.cpp">
@@ -29,12 +30,21 @@
     <ClCompile Include="test_partA.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Matrix.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="test_partB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Auxiliaries.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IntMatrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -164,7 +164,8 @@ namespace mtm
 				throw;
 			}
 		}
-
+		//copy constructor
+		//we assume that T has operator= and default constructor
 		Matrix(const Matrix& other) : dims(other.dims.getRow(), other.dims.getCol())
 		{
 			array2D = new T*[dims.getRow()];
@@ -211,6 +212,7 @@ namespace mtm
 
 		}
 
+		//destructor
 		~Matrix()
 		{
 			for (int i = 0; i < dims.getRow(); i++)
@@ -427,18 +429,18 @@ namespace mtm
 
 		/* const iterator class */
 		class const_iterator;
-		const_iterator begin() const
+		const_iterator begin() const   //const_iterator to the first element in the matrix
 		{
 			return const_iterator(this, dims, 0);
 		}
-		const_iterator end() const
+		const_iterator end() const    //const_itertor to the last elemnt in the matrix
 		{
 			return const_iterator(this, dims, this->size());
 		}
 
 
 		// apply the functor on the matrix and return updated function.
-		// we assume that the functor take T return T 
+		// we assume that the functor take T return T , and T has operator=
 		template<class U>
 		Matrix apply(U functor) const
 		{
@@ -459,7 +461,7 @@ namespace mtm
 	/* End of Matrix<T> class */
 
 	// operator + 
-	// we assume that T has operator + 
+	// we assume that T has operator + and operator =
 	template<class T>
 	mtm::Matrix<T> operator+(const mtm::Matrix<T>& matrix1, const mtm::Matrix<T>& matrix2)
 	{
@@ -484,7 +486,7 @@ namespace mtm
 	}
 
 	// operator +  with T value
-	// we assume that T has operator + //TODO: you meant to say has operator += ?
+	// we assume that T has operator += 
 	template<class T>
 	Matrix<T> operator+(const Matrix<T>& matrix, T value)
 	{
@@ -595,8 +597,6 @@ namespace mtm
 
 		bool operator==(const iterator& it) const
 		{
-			//check self operator == (what kind of exception should throw)
-			// Good question. I don't think there's an error to be thrown, but let's see what others say!
 			return this->index == it.index;
 		}
 
@@ -640,14 +640,12 @@ namespace mtm
 		}
 		const_iterator operator++(int)
 		{
-			iterator result = *this;
+			const_iterator result = *this;
 			++*this;
 			return result;
 		}
 		bool operator==(const const_iterator& it) const
 		{
-			//check self operator == (what kind of exception should throw)
-			// Good question. I don't think there's an error to be thrown, but let's see what others say!
 			return this->index == it.index;
 		}
 		bool operator!=(const const_iterator& it) const

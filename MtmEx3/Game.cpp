@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Exceptions.h"
 
+
 mtm::Game::Game(int height, int width) : board((height <= 0 or width <= 0) ?
  throw mtm::IllegalArgument() : mtm::Matrix<std::shared_ptr<mtm::Character>>(Dimensions(height,width),nullptr))
 {
@@ -76,8 +77,9 @@ void mtm::Game::addCharacter(const mtm::GridPoint& coordinates, std::shared_ptr<
 
 int main()
 {
+	std::shared_ptr<mtm::Character> ptr = mtm::Game::makeCharacter(mtm::CharacterType::MEDIC, mtm::Team::CPP, 10, 5, 4, 2);
 	mtm::Game g1(8,8);
-	g1.addCharacter(mtm::GridPoint(1,1), mtm::Game::makeCharacter(mtm::CharacterType::MEDIC, mtm::Team::CPP, 10, 2, 4, 5));
+	g1.addCharacter(mtm::GridPoint(1,1), mtm::Game::makeCharacter(mtm::CharacterType::MEDIC, mtm::Team::CPP, 10, 5, 4, 2));
 	g1.addCharacter(mtm::GridPoint(1,4), mtm::Game::makeCharacter(mtm::CharacterType::SNIPER, mtm::Team::CPP, 10, 2, 4, 5));
 	g1.addCharacter(mtm::GridPoint(6,1), mtm::Game::makeCharacter(mtm::CharacterType::SOLDIER, mtm::Team::PYTHON, 10, 2, 4, 5));
 	return 0;

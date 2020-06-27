@@ -29,8 +29,8 @@ const char* mtm::OutOfAmmo::what() const noexcept
 {
     return "A game related error has occurred: OutOfAmmo";
 }
-const char* mtm::IllegalTarget ::what() const noexcept
+const char* mtm::IllegalTarget::what() const noexcept
 {
-    return "A game related error has occurred: IllegalTarget – ";
+    return "A game related error has occurred: IllegalTarget";
 }
 

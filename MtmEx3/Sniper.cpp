@@ -1,8 +1,8 @@
 #include "Sniper.h"
 #include "Auxiliaries.h"
 
-Sniper::Sniper(mtm::units_t health, mtm::units_t ammo, mtm::units_t range, mtm::units_t power,mtm::Team team,mtm::CharacterType type = mtm::CharacterType::SNIPER)
-		: mtm::Character(health, ammo, range, power,team, mtm::CharacterType::SNIPER)
+Sniper::Sniper(mtm::units_t health, mtm::units_t ammo, mtm::units_t range, mtm::units_t power,mtm::Team team,mtm::CharacterType type )
+		: mtm::Character(health, ammo, range, power,team, type)
         {}
 
 void Sniper::reload()

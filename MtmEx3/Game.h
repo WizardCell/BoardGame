@@ -17,7 +17,7 @@ namespace mtm
 	{
 	private:
 		mtm::Matrix<std::shared_ptr<mtm::Character>>  board;
-		std::vector<mtm::Character> characters;
+		std::vector<std::shared_ptr<mtm::Character>> characters;
 
 	public:
 		Game(int height, int width);

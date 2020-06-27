@@ -1,8 +1,8 @@
 #include "Soldier.h"
 #include "Auxiliaries.h"
 
-Soldier::Soldier(mtm::units_t health, mtm::units_t ammo, mtm::units_t range, mtm::units_t power,mtm::Team team,mtm::CharacterType type = mtm::CharacterType::SOLDIER)
-		: mtm::Character(health, ammo, range, power,team, mtm::CharacterType::SOLDIER)
+Soldier::Soldier(mtm::units_t health, mtm::units_t ammo, mtm::units_t range, mtm::units_t power,mtm::Team team,mtm::CharacterType type )
+		: mtm::Character(health, ammo, range, power,team, type)
         {}
 
 void Soldier::reload()

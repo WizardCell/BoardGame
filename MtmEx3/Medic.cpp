@@ -2,8 +2,8 @@
 #include "Medic.h"
 #include "Auxiliaries.h"
 
-Medic::Medic(mtm::units_t health, mtm::units_t ammo, mtm::units_t range, mtm::units_t power,mtm::Team team,mtm::CharacterType type = mtm::CharacterType::MEDIC)
-		: mtm::Character(health, ammo, range, power,team, mtm::CharacterType::MEDIC)
+Medic::Medic(mtm::units_t health, mtm::units_t ammo, mtm::units_t range, mtm::units_t power,mtm::Team team,mtm::CharacterType type)
+		: mtm::Character(health, ammo, range, power,team,type)
         {}
 
 void Medic::reload()

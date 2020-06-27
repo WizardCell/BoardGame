@@ -55,7 +55,7 @@ void mtm::Game::addCharacter(const mtm::GridPoint& coordinates, std::shared_ptr<
 	board(coordinates.row,coordinates.col) = character ;
 }
 
- std::shared_ptr<mtm::Character> makeCharacter(mtm::CharacterType type, mtm::Team team,mtm::units_t health, mtm::units_t ammo, mtm::units_t range, mtm::units_t power)
+ std::shared_ptr<mtm::Character> mtm::Game::makeCharacter(mtm::CharacterType type, mtm::Team team,mtm::units_t health, mtm::units_t ammo, mtm::units_t range, mtm::units_t power)
 {
 	if (type == mtm::CharacterType::SOLDIER)
 	{
@@ -75,12 +75,3 @@ void mtm::Game::addCharacter(const mtm::GridPoint& coordinates, std::shared_ptr<
 	return nullptr; // should not get here
 }
 
-int main()
-{
-	std::shared_ptr<mtm::Character> ptr = mtm::Game::makeCharacter(mtm::CharacterType::MEDIC, mtm::Team::CPP, 10, 5, 4, 2);
-	mtm::Game g1(8,8);
-	g1.addCharacter(mtm::GridPoint(1,1), mtm::Game::makeCharacter(mtm::CharacterType::MEDIC, mtm::Team::CPP, 10, 5, 4, 2));
-	g1.addCharacter(mtm::GridPoint(1,4), mtm::Game::makeCharacter(mtm::CharacterType::SNIPER, mtm::Team::CPP, 10, 2, 4, 5));
-	g1.addCharacter(mtm::GridPoint(6,1), mtm::Game::makeCharacter(mtm::CharacterType::SOLDIER, mtm::Team::PYTHON, 10, 2, 4, 5));
-	return 0;
-}

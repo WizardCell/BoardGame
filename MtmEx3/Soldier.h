@@ -20,6 +20,7 @@ namespace mtm
 		Soldier(units_t health, units_t ammo, units_t range, units_t power, Team team, CharacterType type = CharacterType::SOLDIER);
 		~Soldier() = default;
 		void reload() override;
+		char getFirstletter();
 		void move(Matrix<std::shared_ptr<Character>>& board, const GridPoint& start, const GridPoint& finish) override;
 		void attack(Matrix<std::shared_ptr<Character>>& board, const GridPoint& start, const GridPoint& finish) override;
 		std::shared_ptr<Character> clone() const override;

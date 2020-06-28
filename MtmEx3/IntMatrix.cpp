@@ -197,6 +197,7 @@ std::ostream& mtm::operator<<(std::ostream& os, const mtm::IntMatrix matrix)
 	}
 
 	std::string str = printMatrix(matrix_values, matrix.dims);
+	delete[] matrix_values;
 	return os << str;
 }
 

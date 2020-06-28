@@ -25,7 +25,7 @@ namespace mtm
 		virtual ~Character() = default;
 		virtual void move(Matrix<std::shared_ptr<Character>>& board, const GridPoint& start, const GridPoint& finish) = 0; // we do the moving function in game using clone
 		virtual void attack(Matrix<std::shared_ptr<Character>>& board, const GridPoint& start,const GridPoint& finish) = 0;
-
+		virtual char getFirstletter() = 0;
 		virtual void updateHealth(units_t delta);
 		virtual units_t getHealth() const;
 		CharacterType getType() const;

@@ -10,15 +10,15 @@ void Sniper::reload()
     ammo += SNIPER_AMMO_RELOADED; 
 }
 
- bool  Sniper::enoughAmmoForAnAttack()
- {
-     return ammo >= SNIPER_AMMO_ATTACK_COST;
- }
+ //bool  Sniper::enoughAmmoForAnAttack()
+ //{
+ //    return ammo >= SNIPER_AMMO_ATTACK_COST;
+// }
 
- bool  Sniper::canMove(const mtm::GridPoint& start, const mtm::GridPoint& finish)
- {
-     return mtm::GridPoint::distance(start,finish) <= SNIPER_MOVEMENT_RANGE ;
- }
+ //bool  Sniper::canMove(const mtm::GridPoint& start, const mtm::GridPoint& finish)
+//{
+ //    return mtm::GridPoint::distance(start,finish) <= SNIPER_MOVEMENT_RANGE ;
+ //}
 
  std::shared_ptr<mtm::Character>  Sniper::clone() const
  {

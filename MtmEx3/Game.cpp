@@ -50,7 +50,7 @@ void mtm::Game::addCharacter(const mtm::GridPoint& coordinates, std::shared_ptr<
 	
 	if ( board(coordinates.row,coordinates.col) != nullptr)
 	{
-		throw CellOcupied();
+		throw CellOccupied();
 	}
 	board(coordinates.row,coordinates.col) = character ;
 }
@@ -75,3 +75,8 @@ void mtm::Game::addCharacter(const mtm::GridPoint& coordinates, std::shared_ptr<
 	return nullptr; // should not get here
 }
 
+
+void mtm::Game::move(const GridPoint& src_coordinates, const GridPoint& dst_coordinates)
+{
+	board(src_coordinates.row,src_coordinates.col)->move(board,src_coordinates,dst_coordinates); 
+}

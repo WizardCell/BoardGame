@@ -33,7 +33,7 @@ namespace mtm
 		const char* what() const noexcept;
 	};
 
-	class CellOcupied : public GameException
+	class CellOccupied : public GameException
 	{
 		public:
 		const char* what() const noexcept;

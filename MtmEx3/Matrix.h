@@ -52,6 +52,10 @@ namespace mtm
 		T** array2D;
 		Dimensions dims;
 
+	public:
+		bool isWithinLimits(const GridPoint point) const;
+	
+	private:
 		// helper function for comparing according to compare function.
 		// we assume that T is comparable.
 		static Matrix<bool> requiredMatrix(Matrix matrix, bool(*compare)(T, T), T value)
@@ -459,6 +463,13 @@ namespace mtm
 
 	};
 	/* End of Matrix<T> class */
+
+	// Check if param @point is within matrix limits
+	template <class T>
+	bool Matrix<T>::isWithinLimits(const GridPoint point) const
+	{
+		return point.col >= 0 && point.col < width() && point.row >= 0 && point.row < height();
+	}
 
 	// operator + 
 	// we assume that T has operator + and operator =

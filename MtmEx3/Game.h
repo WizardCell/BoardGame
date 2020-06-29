@@ -8,6 +8,11 @@
 #include "Soldier.h"
 #include "Medic.h"
 
+/* Game class
+*A game between 2 teams CPP, PYTHON  to determine who is the best 
+* The has 3 Characters @Sniper ,Soldier ,Medic@ everyone with his own functions
+* we use a board witch is a matrix that we created in Part B  
+*/
 
 
 
@@ -17,8 +22,6 @@ namespace mtm
 	{
 	private:
 		mtm::Matrix<std::shared_ptr<mtm::Character>>  board;
-		std::vector<std::shared_ptr<mtm::Character>> characters;
-
 	public:
 		Game(int height, int width);
 		~Game() = default;

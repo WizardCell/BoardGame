@@ -2,8 +2,8 @@
 #include "Auxiliaries.h"
 #include "Exceptions.h"
 
-static const mtm::units_t power_rate = 2;
-static const mtm::units_t damage_radius = 3;
+static const double power_rate = 2.0;
+static const double damage_radius = 3.0;
 
 mtm::Soldier::Soldier(units_t health, units_t ammo, units_t range, units_t power,Team team, CharacterType type)
 		: Character(health, ammo, range, power,team, type)
@@ -46,23 +46,28 @@ void mtm::Soldier::reload()
     return ptr;
  }
 
- void mtm::Soldier::damage(Matrix<std::shared_ptr<mtm::Character>>& board, const GridPoint& start, const GridPoint& finish)
+//helper function , that reduces the health of the target and his near teammates according to the attacker power
+// @param , game board , the target cell , near cell 
+ void mtm::Soldier::damage(Matrix<std::shared_ptr<mtm::Character>>& board, const GridPoint& finish, const GridPoint& near)
  {
-	 if (start.row == finish.row && start.col == finish.col)
+	 if (near.row == finish.row && near.col == finish.col)
 	 {
 		 board(finish.row, finish.col)->updateHealth(-power);
 	 }
 	 else
 	 {
-		 board(finish.row, finish.col)->updateHealth(-(int)ceil(power / power_rate));
+		 board(near.row, near.col)->updateHealth(-(int)ceil(power / power_rate));
 	 }
 
 	 // Check if the damaged character has died
-	 if (board(finish.row, finish.col)->getHealth() <= 0)
+	 if (board(near.row, near.col)->getHealth() <= 0)
 	 {
-		 board(finish.row, finish.col) = nullptr;
+		 board(near.row, near.col) = nullptr;
 	 }
  }
+
+ //retruns the firsl letter of the character
+ //In capital letter if he belongs to CPP  , else small letter
  char mtm::Soldier::getFirstletter()
  {
 	 if (team == CPP)
@@ -103,17 +108,16 @@ void mtm::Soldier::reload()
 	 
 
 	 ammo--;
-	 GridPoint origin(0, 0);
-
-	 for (origin.row; origin.row < board.height(); origin.row++)
+	 for (int i = 0; i < board.height(); i++)       //now we make the attack 
 	 {
-		 for (origin.col = 0; origin.col < board.width(); origin.col++)
+		 for (int j = 0; j < board.width(); j++)
 		 {
-			 if (GridPoint::distance(origin, finish) <= (int)(ceil(range / damage_radius)+0.5) &&           //ceil returns double need to cast to make sure .
-				 board(origin.row, origin.col)->getTeam() != team &&
-				 board(origin.row, origin.col) != nullptr)
+			 GridPoint near(i, j);
+			 if (GridPoint::distance(near, finish) <= (int)(ceil(range / damage_radius)+0.5) &&           //ceil returns double need to cast to make sure .
+				 board(i,j) != nullptr && 
+				 board(i, j)->getTeam() != team )
 			 {
-				 damage(board, finish, origin);    
+				 damage(board, finish, near);    
 			 }
 		 }
 	 }

@@ -64,6 +64,7 @@ void Medic::move(Matrix<std::shared_ptr<Character>>& board, const GridPoint& sta
 }
 
 //attack function for Medic 
+//@param game board , Medic cell , target cell 
 void Medic::attack(Matrix<std::shared_ptr<Character>>& board, const GridPoint& start,const GridPoint& finish)
 {
     if (!board.isWithinLimits(finish) or !board.isWithinLimits(start)) 
@@ -96,7 +97,7 @@ void Medic::attack(Matrix<std::shared_ptr<Character>>& board, const GridPoint& s
             board(finish.row,finish.col) = nullptr;
         }
     }
-    else  //same teams
+    else  //same teams ,(we heal teammates)
     {
         board(finish.row,finish.col)->updateHealth(power);
     }

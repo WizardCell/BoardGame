@@ -3,8 +3,9 @@
 #include "Exceptions.h"
 using namespace mtm;
 
-static const int min_range_rate =2 ;
-static const int power_spike = 3 ;
+static const double min_range_rate =2 ;
+static const double power_spike = 2 ;
+
 
 
 
@@ -63,6 +64,8 @@ void Sniper::move(Matrix<std::shared_ptr<Character>>& board, const GridPoint& st
 	 board(start.row, start.col) = nullptr;
  }
 
+//attack function for the sniper.
+//@param game board , sniper cell , target cell .
 void Sniper::attack(Matrix<std::shared_ptr<Character>>& board, const GridPoint& start,const GridPoint& finish) 
 {
     if (!board.isWithinLimits(finish) or !board.isWithinLimits(start)) 

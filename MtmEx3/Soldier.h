@@ -14,7 +14,7 @@ namespace mtm
 	{
 	private:
 		// Helper function that deals damage to enemies
-		void damage(Matrix<std::shared_ptr<Character>>& board, const GridPoint& start, const GridPoint& finish);
+		void damage(Matrix<std::shared_ptr<Character>>& board, const GridPoint& finish, const GridPoint& near);
 
 	public:
 		Soldier(units_t health, units_t ammo, units_t range, units_t power, Team team, CharacterType type = CharacterType::SOLDIER);

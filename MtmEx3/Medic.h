@@ -3,16 +3,10 @@
 
 #include "Auxiliaries.h"
 #include "Character.h"
-<<<<<<< HEAD
 
 static const mtm::units_t movement_range = 5;
 static const mtm::units_t reload_amount = 5;
 static const mtm::units_t attack_ammo_cost = 1;
-=======
-static const mtm::units_t medic_movement_range = 5;
-static const mtm::units_t medic_reload_amount = 5;
-
->>>>>>> master
 
 namespace mtm
 {

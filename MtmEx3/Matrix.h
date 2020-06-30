@@ -343,7 +343,7 @@ namespace mtm
 			{
 				for (int j = 0; j < dims.getCol(); j++)
 				{
-					result.array2D[i][j] *= -1;
+					result.array2D[i][j] = -result.array2D[i][j];
 				}
 			}
 			return result;
@@ -508,7 +508,15 @@ namespace mtm
 	template<class T>
 	Matrix<T> operator+(T value, const Matrix<T>& matrix)
 	{
-		return (matrix + value);
+		Matrix<T> temp_mat(matrix);
+		for (int i = 0; i < matrix.height(); i++)
+			{
+				for (int j = 0; j < matrix.width(); j++)
+				{
+					temp_mat(i,j) = value + temp_mat(i,j) ;
+				}
+			}
+			return (temp_mat);
 	}
 	/* end of operator + */
 
@@ -585,7 +593,7 @@ namespace mtm
 	public:
 		T& operator*() const
 		{
-			if (index < 0 or index > matrix->size())
+			if (index < 0 or index > matrix->size()  or *this == this->matrix->end())
 			{
 				throw mtm::Matrix<T>::AccessIllegalElement();
 			}

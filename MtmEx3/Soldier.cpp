@@ -35,7 +35,7 @@ void mtm::Soldier::reload()
 		 throw CellOccupied();
 	 }
 
-	 std::shared_ptr<mtm::Character> temp = board(start.row, start.col)->clone();    // u need clone here to make exact copy 
+	 std::shared_ptr<mtm::Character> temp = board(start.row, start.col)->clone();    // u need clone here to make exact copy //Didn't get why we need clone?
 	 board(finish.row, finish.col) = temp;
 	 board(start.row, start.col) = nullptr;
  }
@@ -66,7 +66,7 @@ void mtm::Soldier::reload()
 	 }
  }
 
- //retruns the firsl letter of the character
+ //returns the first letter of the character
  //In capital letter if he belongs to CPP  , else small letter
  char mtm::Soldier::getFirstletter()
  {
@@ -82,7 +82,7 @@ void mtm::Soldier::reload()
  }
 
 // attack function
-// soldier attacking the finish cell acoording to the game rules.
+// soldier attacking the finish cell according to the game rules.
  void mtm::Soldier::attack(Matrix<std::shared_ptr<mtm::Character>>& board, const mtm::GridPoint& start, const mtm::GridPoint& finish)
  {
 	 if (!board.isWithinLimits(finish) or !board.isWithinLimits(start)) 
@@ -107,13 +107,13 @@ void mtm::Soldier::reload()
 	 }
 	 
 
-	 ammo--;
+	 ammo = ammo - attack_ammo_cost;
 	 for (int i = 0; i < board.height(); i++)       //now we make the attack 
 	 {
 		 for (int j = 0; j < board.width(); j++)
 		 {
 			 GridPoint near(i, j);
-			 if (GridPoint::distance(near, finish) <= (int)(ceil(range / damage_radius)+0.5) &&           //ceil returns double need to cast to make sure .
+			 if (GridPoint::distance(near, finish) <= (int)(ceil(range / damage_radius)+0.5) &&
 				 board(i,j) != nullptr && 
 				 board(i, j)->getTeam() != team )
 			 {

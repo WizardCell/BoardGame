@@ -54,7 +54,7 @@ namespace mtm
 
 	public:
 		bool isWithinLimits(const GridPoint point) const;
-	
+
 	private:
 		// helper function for comparing according to compare function.
 		// we assume that T is comparable.

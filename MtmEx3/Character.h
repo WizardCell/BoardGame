@@ -23,7 +23,7 @@ namespace mtm
 		Character(units_t health, units_t ammo, units_t range, units_t power, Team team, CharacterType type);
 		Character(const Character& other);
 		virtual ~Character() = default;
-		virtual void move(Matrix<std::shared_ptr<Character>>& board, const GridPoint& start, const GridPoint& finish) = 0; // we do the moving function in game using clone
+		virtual void move(Matrix<std::shared_ptr<Character>>& board, const GridPoint& start, const GridPoint& finish) = 0;
 		virtual void attack(Matrix<std::shared_ptr<Character>>& board, const GridPoint& start,const GridPoint& finish) = 0;
 		virtual char getFirstletter() = 0;
 		virtual void updateHealth(units_t delta);
@@ -32,7 +32,6 @@ namespace mtm
 		virtual Team getTeam() const;
 		virtual void reload() = 0;
 		virtual std::shared_ptr<Character> clone() const = 0;
-		//virtual bool enoughAmmoForAnAttack() = 0;
 
 	};
 }

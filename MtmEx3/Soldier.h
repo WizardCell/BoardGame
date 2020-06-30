@@ -6,7 +6,7 @@
 
 static const mtm::units_t movement_range = 3;
 static const mtm::units_t reload_amount = 3;
-static const mtm::units_t attack_cost = 1;
+static const mtm::units_t attack_ammo_cost = 1;
 
 namespace mtm
 {

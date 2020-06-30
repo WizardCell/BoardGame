@@ -47,17 +47,17 @@ mtm::IntMatrix::~IntMatrix()
 	delete[] array2D;
 }
 
-mtm::IntMatrix::iterator mtm::IntMatrix::begin() 
+mtm::IntMatrix::iterator mtm::IntMatrix::begin()
 {
 	return iterator(this, dims, 0);
 }
 
-mtm::IntMatrix::iterator mtm::IntMatrix::end() 
+mtm::IntMatrix::iterator mtm::IntMatrix::end()
 {
 	return iterator(this, dims, this->size());
 }
 
-mtm::IntMatrix::const_iterator mtm::IntMatrix::begin() const 
+mtm::IntMatrix::const_iterator mtm::IntMatrix::begin() const
 {
 	return const_iterator(this, dims, 0);
 }
@@ -149,9 +149,9 @@ mtm::IntMatrix& mtm::IntMatrix::operator=(const IntMatrix& other)
 		array2D[i] = new int[dims.getCol()];
 	}
 
-	for (int i = 0; i < dims.getRow(); i++) 
+	for (int i = 0; i < dims.getRow(); i++)
 	{
-		for (int j = 0; j < dims.getCol(); j++) 
+		for (int j = 0; j < dims.getCol(); j++)
 		{
 			array2D[i][j] = other.array2D[i][j];
 		}
@@ -324,11 +324,11 @@ mtm::IntMatrix::iterator::iterator(IntMatrix* matrix, const Dimensions dims, int
 	: matrix(matrix), dims(dims), index(index)
 {}
 
- int& mtm::IntMatrix::iterator::operator*() const
+int& mtm::IntMatrix::iterator::operator*() const
 {
 	assert(index >= 0 && index < matrix->size());
 	int col = dims.getCol();
-	return matrix->array2D[(int)index/col][index%col];
+	return matrix->array2D[(int)index / col][index%col];
 }
 
 mtm::IntMatrix::iterator& mtm::IntMatrix::iterator::operator++()
@@ -362,7 +362,7 @@ mtm::IntMatrix::const_iterator::const_iterator(const IntMatrix* matrix, const Di
 	: matrix(matrix), dims(dims), index(index)
 {}
 
- const int& mtm::IntMatrix::const_iterator::operator*() const
+const int& mtm::IntMatrix::const_iterator::operator*() const
 {
 	assert(index >= 0 && index < matrix->size());
 	int col = dims.getCol();

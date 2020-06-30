@@ -123,7 +123,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include=".gitignore" />
     <None Include="README.md" />
     <None Include="test_partA_output" />
     <None Include="test_partB_output" />
@@ -131,23 +130,26 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Auxiliaries.cpp" />
-    <ClCompile Include="Board.cpp" />
     <ClCompile Include="Character.cpp" />
+    <ClCompile Include="Exceptions.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="IntMatrix.cpp" />
-    <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="Medic.cpp" />
+    <ClCompile Include="Sniper.cpp" />
+    <ClCompile Include="Soldier.cpp" />
     <ClCompile Include="test_partA.cpp" />
     <ClCompile Include="test_partB.cpp" />
     <ClCompile Include="test_partC.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Auxiliaries.h" />
-    <ClInclude Include="Board.h" />
     <ClInclude Include="Character.h" />
-    <ClInclude Include="Exception.h" />
+    <ClInclude Include="Exceptions.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="IntMatrix.h" />
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="Medic.h" />
+    <ClInclude Include="Sniper.h" />
     <ClInclude Include="Soldier.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

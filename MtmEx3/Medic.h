@@ -2,9 +2,9 @@
 #define MEDIC_HW3
 #include "Auxiliaries.h"
 #include "Character.h"
-static const mtm::units_t medic_movement_range = 4;
-static const mtm::units_t medic_reload_amount = 2;
-static const mtm::units_t medic_attack_cost_to_enemy = 1;
+static const mtm::units_t medic_movement_range = 5;
+static const mtm::units_t medic_reload_amount = 5;
+
 
 namespace mtm
 {

@@ -21,7 +21,11 @@ const char* MoveTooFar::what() const noexcept
 }
 const char* CellOccupied::what() const noexcept
 {
+<<<<<<< HEAD
 	return "A game related error has occurred: CellOcupied";
+=======
+    return "A game related error has occurred: CellOccupied";
+>>>>>>> master
 }
 const char* OutOfRange::what() const noexcept
 {

@@ -17,7 +17,7 @@ namespace mtm
 		~Medic() = default;
 		void reload() override;
 		char getFirstletter() override;
-		std::shared_ptr<mtm::Character> clone() const override;
+		virtual std::shared_ptr<mtm::Character> clone() const override;
 		void move(Matrix<std::shared_ptr<Character>>& board, const GridPoint& start, const GridPoint& finish) override;
 		void attack(Matrix<std::shared_ptr<Character>>& board, const GridPoint& start, const GridPoint& finish) override;
 	};

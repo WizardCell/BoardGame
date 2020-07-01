@@ -23,7 +23,7 @@ namespace mtm
 		char getFirstletter();
 		void move(Matrix<std::shared_ptr<Character>>& board, const GridPoint& start, const GridPoint& finish) override;
 		void attack(Matrix<std::shared_ptr<Character>>& board, const GridPoint& start, const GridPoint& finish) override;
-		std::shared_ptr<Character> clone() const override;
+		virtual std::shared_ptr<Character> clone() const override;
 	};
 }
 #endif // EX3_SOLDIER_H

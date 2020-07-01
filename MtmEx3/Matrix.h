@@ -126,9 +126,9 @@ namespace mtm
 			{
 				throw IllegalInitialization();
 			}
-
-			array2D = new T*[dims.getRow()];
 			int counter = 0;
+			array2D = new T*[dims.getRow()];
+			
 
 			try
 			{

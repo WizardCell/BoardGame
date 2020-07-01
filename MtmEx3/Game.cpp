@@ -52,14 +52,13 @@ mtm::Game& mtm::Game::operator=(const Game& other)
 //no need to make a copy we use the original.
 void mtm::Game::addCharacter(const mtm::GridPoint& coordinates, std::shared_ptr<mtm::Character> character)
 {
-	if (character == nullptr)
-	{
-		throw IllegalArgument();
-	}
-
 	if (coordinates.row < 0 or coordinates.row > board.height() or coordinates.col < 0 or coordinates.col > board.width())
 	{
 		throw IllegalCell();
+	}
+	if (character == nullptr)
+	{
+		throw IllegalArgument();
 	}
 
 	if (board(coordinates.row, coordinates.col) != nullptr)
@@ -91,6 +90,10 @@ std::shared_ptr<mtm::Character> mtm::Game::makeCharacter(mtm::CharacterType type
 //calling move function according to the character in the cell (polymorphism) 
 void mtm::Game::move(const GridPoint& src_coordinates, const GridPoint& dst_coordinates)
 {
+	if (!(board.isWithinLimits(src_coordinates)) or !(board.isWithinLimits(dst_coordinates)))
+	{
+		throw IllegalCell();
+	}
 	if (board(src_coordinates.row, src_coordinates.col) == nullptr)
 	{
 		throw CellEmpty();
@@ -101,6 +104,10 @@ void mtm::Game::move(const GridPoint& src_coordinates, const GridPoint& dst_coor
 //calling attack function for the character in the src_coordiantes
 void mtm::Game::attack(const GridPoint& src_coordinates, const GridPoint & dst_coordinates)
 {
+	if (!(board.isWithinLimits(src_coordinates)) or !(board.isWithinLimits(dst_coordinates)))
+	{
+		throw IllegalCell();
+	}
 	if (board(src_coordinates.row, src_coordinates.col) == nullptr)
 	{
 		throw CellEmpty();

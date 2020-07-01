@@ -23,9 +23,7 @@ mtm::Game::Game(const Game& other) : board(Dimensions(other.board.height(), othe
 }
 
 mtm::Game::~Game()
-{
-	delete &board;
-}
+{}
 
 //operator=
 //the 2 games not connected we use clone .
@@ -76,11 +74,11 @@ std::shared_ptr<mtm::Character> mtm::Game::makeCharacter(mtm::CharacterType type
 	switch (type)
 	{
 	case SOLDIER:
-		return std::shared_ptr<Character>(new Soldier(health, power, team, range, ammo));
+		return std::shared_ptr<Character>(new Soldier(health, ammo, range, power, team));
 	case MEDIC:
-		return std::shared_ptr<Character>(new Medic(health, power, team, range, ammo));
+		return std::shared_ptr<Character>(new Medic(health, ammo, range, power, team));
 	case SNIPER:
-		return std::shared_ptr<Character>(new Sniper(health, power, team, range, ammo));
+		return std::shared_ptr<Character>(new Sniper(health,ammo, range, power, team));
 	default:
 		throw IllegalArgument();
 	}

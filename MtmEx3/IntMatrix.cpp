@@ -67,7 +67,7 @@ mtm::IntMatrix::const_iterator mtm::IntMatrix::end() const
 	return const_iterator(this, dims, this->size());
 }
 
-
+/* Constructs an identity matrix */
 mtm::IntMatrix mtm::IntMatrix::Identity(int size)
 {
 	Dimensions identityDims(size, size);
@@ -80,6 +80,7 @@ mtm::IntMatrix mtm::IntMatrix::Identity(int size)
 	return identity;
 }
 
+/* Transposes the matrix */
 mtm::IntMatrix mtm::IntMatrix::transpose() const
 {
 	Dimensions dim(dims.getCol(), dims.getRow());
@@ -95,6 +96,7 @@ mtm::IntMatrix mtm::IntMatrix::transpose() const
 	return transposedMatrix;
 }
 
+/* Operators */
 mtm::IntMatrix mtm::operator+(const IntMatrix& matrix1, const IntMatrix& matrix2)
 {
 	IntMatrix result(matrix1.dims);
@@ -212,7 +214,7 @@ const int& mtm::IntMatrix::operator()(int i, int j) const
 }
 
 
-
+/* Simple comparison functions */
 bool mtm::bigger(int a, int b)
 {
 	return a > b;
@@ -238,6 +240,7 @@ bool mtm::notEqual(int a, int b)
 	return a != b;
 }
 
+/* Operators */
 mtm::IntMatrix mtm::IntMatrix::operator<(int number)
 {
 	return requiredMatrix(*this, min, number);

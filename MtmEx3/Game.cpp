@@ -22,6 +22,11 @@ mtm::Game::Game(const Game& other) : board(Dimensions(other.board.height(), othe
 	}
 }
 
+mtm::Game::~Game()
+{
+	delete &board;
+}
+
 //operator=
 //the 2 games not connected we use clone .
 mtm::Game& mtm::Game::operator=(const Game& other)
@@ -46,7 +51,12 @@ mtm::Game& mtm::Game::operator=(const Game& other)
 //no need to make a copy we use the original.
 void mtm::Game::addCharacter(const mtm::GridPoint& coordinates, std::shared_ptr<mtm::Character> character)
 {
-	if (coordinates.row <0 or coordinates.row > board.height() or coordinates.col < 0 or coordinates.col > board.width())
+	if (character == nullptr)
+	{
+		throw IllegalArgument();
+	}
+
+	if (coordinates.row < 0 or coordinates.row > board.height() or coordinates.col < 0 or coordinates.col > board.width())
 	{
 		throw IllegalCell();
 	}
@@ -55,32 +65,29 @@ void mtm::Game::addCharacter(const mtm::GridPoint& coordinates, std::shared_ptr<
 	{
 		throw CellOccupied();
 	}
+
 	board(coordinates.row, coordinates.col) = character;
 }
 
-//adding new character accodring to the values were given 
-//(excptions send from the cons')
+//adding new character according to the values were given 
+//(exceptions send from the cons')
 std::shared_ptr<mtm::Character> mtm::Game::makeCharacter(mtm::CharacterType type, mtm::Team team, mtm::units_t health, mtm::units_t ammo, mtm::units_t range, mtm::units_t power)
 {
-	if (type == mtm::CharacterType::SOLDIER)
+	switch (type)
 	{
-		std::shared_ptr<mtm::Character> ptr(new Soldier(health, ammo, range, power, team));
-		return ptr;
+	case SOLDIER:
+		return std::shared_ptr<Character>(new Soldier(health, power, team, range, ammo));
+	case MEDIC:
+		return std::shared_ptr<Character>(new Medic(health, power, team, range, ammo));
+	case SNIPER:
+		return std::shared_ptr<Character>(new Sniper(health, power, team, range, ammo));
+	default:
+		throw IllegalArgument();
 	}
-	if (type == mtm::CharacterType::SNIPER)
-	{
-		std::shared_ptr<mtm::Character> ptr(new Sniper(health, ammo, range, power, team));
-		return ptr;
-	}
-	if (type == mtm::CharacterType::MEDIC)
-	{
-		std::shared_ptr<mtm::Character> ptr(new Medic(health, ammo, range, power, team));
-		return ptr;
-	}
-	return nullptr; // should not get here
+
 }
 
-//calling move function according to the character in the cell (polymorphsim) 
+//calling move function according to the character in the cell (polymorphism) 
 void mtm::Game::move(const GridPoint& src_coordinates, const GridPoint& dst_coordinates)
 {
 	if (board(src_coordinates.row, src_coordinates.col) == nullptr)
@@ -114,7 +121,7 @@ void mtm::Game::reload(const mtm::GridPoint& coordinates)
 }
 
 //operator << calling printMatrix
-std::ostream& mtm::operator<<(std::ostream& os, const mtm::Game game)
+std::ostream& mtm::operator<<(std::ostream& os, const mtm::Game& game)
 {
 	int col = game.board.width();
 	char* names = new char[game.board.size()];

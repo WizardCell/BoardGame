@@ -3,6 +3,8 @@
 
 /* IntMatrix class */
 
+// constructor
+//param ,dims and intial value
 mtm::IntMatrix::IntMatrix(Dimensions dims, int initVal)
 	: dims(dims.getRow(), dims.getCol())
 {
@@ -21,6 +23,8 @@ mtm::IntMatrix::IntMatrix(Dimensions dims, int initVal)
 	}
 }
 
+//copy constructor
+//param another matrix
 mtm::IntMatrix::IntMatrix(const IntMatrix& other)
 	: dims(other.dims.getRow(), other.dims.getCol())
 {
@@ -38,6 +42,7 @@ mtm::IntMatrix::IntMatrix(const IntMatrix& other)
 	}
 }
 
+//destructor
 mtm::IntMatrix::~IntMatrix()
 {
 	for (int i = 0; i < dims.getRow(); i++)
@@ -47,11 +52,13 @@ mtm::IntMatrix::~IntMatrix()
 	delete[] array2D;
 }
 
+//iterator the first elemnt
 mtm::IntMatrix::iterator mtm::IntMatrix::begin()
 {
 	return iterator(this, dims, 0);
 }
 
+//iterator the last element
 mtm::IntMatrix::iterator mtm::IntMatrix::end()
 {
 	return iterator(this, dims, this->size());
@@ -111,6 +118,7 @@ mtm::IntMatrix mtm::operator+(const IntMatrix& matrix1, const IntMatrix& matrix2
 	return result;
 }
 
+//- unari
 mtm::IntMatrix mtm::IntMatrix::operator-() const
 {
 	IntMatrix result(*this);
@@ -130,6 +138,7 @@ mtm::IntMatrix mtm::IntMatrix::operator-(const IntMatrix& matrix) const
 	return operator+(*this, -matrix);
 }
 
+//assingment operator
 mtm::IntMatrix& mtm::IntMatrix::operator=(const IntMatrix& other)
 {
 	if (this == &other)    //checking selfOperator=
@@ -203,6 +212,7 @@ std::ostream& mtm::operator<<(std::ostream& os, const mtm::IntMatrix matrix)
 	return os << str;
 }
 
+// returns a copy the cell (i,j)
 int& mtm::IntMatrix::operator()(int i, int j)
 {
 	return array2D[i][j];
@@ -294,6 +304,7 @@ mtm::IntMatrix mtm::IntMatrix::requiredMatrix(mtm::IntMatrix matrix, bool(*compa
 	return result;
 }
 
+// return true if and only if all the matrix values are different than zero
 bool mtm::all(IntMatrix matrix)
 {
 	for (int i = 0; i < matrix.dims.getRow(); i++)
@@ -307,6 +318,8 @@ bool mtm::all(IntMatrix matrix)
 	return true;
 }
 
+//returns true if any of the values is zero.
+//param matrix 
 bool mtm::any(IntMatrix matrix)
 {
 	for (int i = 0; i < matrix.dims.getRow(); i++)

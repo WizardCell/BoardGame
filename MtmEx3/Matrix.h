@@ -128,8 +128,6 @@ namespace mtm
 			}
 			int counter = 0;
 			array2D = new T*[dims.getRow()];
-			
-
 			try
 			{
 				for (int i = 0; i < dims.getRow(); i++)
@@ -269,10 +267,14 @@ namespace mtm
 				{
 					delete[] temp[i];
 				}
-				delete[]  temp;
+				delete[] temp;
 				throw;
 			}
-			delete[]  array2D; //from this point nothing can fail
+			for (int i = 0; i < dims.getRow(); i++)  //from this point nothing can fail
+			{
+				delete[] array2D[i];
+			}
+			delete[] array2D;                
 			array2D = temp;
 			dims = matrix.dims;
 			return (*this);

@@ -70,7 +70,7 @@ public:
     bool operator>(const DependencyFinder& other) const{used[">"] = true; return data > other.data;}
     bool operator>=(const DependencyFinder& other) const{used[">="] = true; return data >= other.data;}
    // bool operator==(const DependencyFinder& other) const{used["=="] = true; return data == other.data;}
-  //  bool operator!=(const DependencyFinder& other) const{used["!="] = true; return data != other.data;}
+   // bool operator!=(const DependencyFinder& other) const{used["!="] = true; return data != other.data;}
     operator bool() const{used["bool"] = true; return data;}
     friend ostream& operator<<(ostream& os, DependencyFinder const d1){used["<<"] = true; return os << d1.data;}
 
@@ -274,7 +274,7 @@ bool testConstructor(){
     }
     catch(const Matrix<T1>::IllegalInitialization& e){
         // Tests that IllegalInitialization extends std::exception
-       // std::exception e_test = e;
+        //std::exception e_test = e;
         ASSERT_TEST(string(e.what()) == "Mtm matrix error: Illegal initialization values");
     }
 
@@ -548,7 +548,7 @@ bool testOperatorNegative(){
     }
     catch(const Matrix<int>::DimensionMismatch& e){
         // Tests that DimensionMismatch extends std::exception
-        //std::exception e_test = e;
+       // std::exception e_test = e;
         ASSERT_TEST(string(e.what()) == "Mtm matrix error: Dimension mismatch: (18,5) (17,5)");
     }
 
@@ -681,7 +681,7 @@ bool testOperatorParenthesis(){
     }
     catch(const Matrix<int>::AccessIllegalElement& e){
         // Tests that AccessIllegalElement extends std::exception
-        //std::exception e_test = e;
+       // std::exception e_test = e;
         ASSERT_TEST(string(e.what()) == "Mtm matrix error: An attempt to access an illegal element");
     }
 

@@ -29,7 +29,7 @@ namespace mtm
 		// C'tors and D'tor
 		Game(int height, int width);
 		Game(const Game& other);
-		~Game();
+		~Game() = default;
 
 		// Operators
 		Game& operator=(const Game& other);

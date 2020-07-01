@@ -22,27 +22,30 @@ mtm::Game::Game(const Game& other) : board(Dimensions(other.board.height(), othe
 	}
 }
 
-mtm::Game::~Game()
-{}
 
 //operator=
 //the 2 games not connected we use clone .
 mtm::Game& mtm::Game::operator=(const Game& other)
 {
-	for (int i = 0; i < board.height(); i++)
+
+	Dimensions dims(other.board.height(),other.board.width());
+	Matrix<std::shared_ptr<Character>> temp(dims);
+	for (int i = 0; i < other.board.height(); i++)
 	{
-		for (int j = 0; j < board.width(); j++)
+		for (int j = 0; j < other.board.width(); j++)
 		{
 			if (other.board(i, j) != nullptr)
 			{
-				board(i, j) = (other.board)(i, j)->clone();
+				temp(i,j) = (other.board)(i,j)->clone();
 			}
 			else
 			{
-				board(i, j) = nullptr;
+				temp(i,j) = nullptr;
 			}
 		}
 	}
+	board = temp;
+	return (*this);
 }
 
 //adding character to the board

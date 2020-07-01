@@ -56,11 +56,7 @@ void mtm::Game::addCharacter(const mtm::GridPoint& coordinates, std::shared_ptr<
 	{
 		throw IllegalCell();
 	}
-	if (character == nullptr)
-	{
-		throw IllegalArgument();
-	}
-
+	
 	if (board(coordinates.row, coordinates.col) != nullptr)
 	{
 		throw CellOccupied();

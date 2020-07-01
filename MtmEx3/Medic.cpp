@@ -11,7 +11,7 @@ Medic::Medic(mtm::units_t health, mtm::units_t ammo, mtm::units_t range, mtm::un
 //adding ammo with the amount allowed to this character
 void Medic::reload()
 {
-	ammo += reload_amount;
+	ammo += medic_reload_amount;
 }
 
 std::shared_ptr<mtm::Character> Medic::clone() const
@@ -50,7 +50,7 @@ void Medic::move(Matrix<std::shared_ptr<Character>>& board, const GridPoint& sta
 	{
 		throw CellEmpty();
 	}
-	if (GridPoint::distance(start, finish) > movement_range)
+	if (GridPoint::distance(start, finish) > medic_movement_range)
 	{
 		throw MoveTooFar();
 	}
@@ -76,7 +76,7 @@ void Medic::attack(Matrix<std::shared_ptr<Character>>& board, const GridPoint& s
 	{
 		throw CellEmpty();
 	}
-	if (GridPoint::distance(start, finish) > movement_range)
+	if (GridPoint::distance(start, finish) > range)
 	{
 		throw OutOfRange();
 	}
@@ -91,7 +91,7 @@ void Medic::attack(Matrix<std::shared_ptr<Character>>& board, const GridPoint& s
 
 	if (board(finish.row, finish.col)->getTeam() != team)
 	{
-		ammo = ammo - attack_ammo_cost;
+		ammo = ammo - medic_attack_ammo_cost;
 		board(finish.row, finish.col)->updateHealth(-power);
 		if (board(finish.row, finish.col)->getHealth() <= 0)
 		{

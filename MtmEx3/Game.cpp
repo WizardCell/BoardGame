@@ -14,9 +14,9 @@ mtm::Game::Game(const Game& other) : board(Dimensions(other.board.height(), othe
 	{
 		for (int j = 0; j < board.width(); j++)
 		{
-			if (other.board(i, j) != nullptr)
+			if (other.board(i,j) != nullptr)
 			{
-				board(i, j) = (other.board)(i, j)->clone();
+				board(i,j) = (other.board)(i, j)->clone();
 			}
 		}
 	}
@@ -52,7 +52,7 @@ mtm::Game& mtm::Game::operator=(const Game& other)
 //no need to make a copy we use the original.
 void mtm::Game::addCharacter(const mtm::GridPoint& coordinates, std::shared_ptr<mtm::Character> character)
 {
-	if (coordinates.row < 0 or coordinates.row > board.height() or coordinates.col < 0 or coordinates.col > board.width())
+	if(!(board.isWithinLimits(coordinates)))
 	{
 		throw IllegalCell();
 	}
@@ -82,7 +82,7 @@ std::shared_ptr<mtm::Character> mtm::Game::makeCharacter(mtm::CharacterType type
 	case SNIPER:
 		return std::shared_ptr<Character>(new Sniper(health,ammo, range, power, team));
 	default:
-		throw IllegalArgument();
+		throw IllegalArgument(); //should not get here
 	}
 
 }

@@ -2,10 +2,8 @@
 #include "Auxiliaries.h"
 #include "Exceptions.h"
 
-static const mtm::units_t min_range_rate = 2;
-static const mtm::units_t power_spike = 2;
-static const mtm::units_t power_increase_rate = 3;
-
+static const double min_range_rate = 2;
+static const int power_spike = 2;
 
 mtm::Sniper::Sniper(mtm::units_t health, mtm::units_t ammo, mtm::units_t range, mtm::units_t power, mtm::Team team, mtm::CharacterType type)
 	: mtm::Character(health, ammo, range, power, team, type)
@@ -15,7 +13,7 @@ mtm::Sniper::Sniper(mtm::units_t health, mtm::units_t ammo, mtm::units_t range, 
 
 void mtm::Sniper::reload()
 {
-	ammo += reload_amount;
+	ammo += sniper_reload_amount;
 }
 
 std::shared_ptr<mtm::Character> mtm::Sniper::clone() const
@@ -48,7 +46,7 @@ void mtm::Sniper::move(Matrix<std::shared_ptr<Character>>& board, const GridPoin
 	{
 		throw CellEmpty();
 	}
-	if (GridPoint::distance(start, finish) > movement_range)
+	if (GridPoint::distance(start, finish) > sniper_movement_range)
 	{
 		throw MoveTooFar();
 	}
@@ -87,12 +85,12 @@ void mtm::Sniper::attack(Matrix<std::shared_ptr<Character>>& board, const GridPo
 		throw IllegalTarget();
 	}
 	
-	ammo = ammo - attack_ammo_cost; //reduce ammo
+	ammo = ammo - sniper_attack_ammo_cost; //reduce ammo
 
 	//if we get here it is a legal attack 
 	if (counter == power_spike)   //if counter=3 we do a power spike.
 	{
-		board(finish.row, finish.col)->updateHealth(-power_increase_rate * power);
+		board(finish.row, finish.col)->updateHealth(-power_spike * power);
 		counter = 0;
 	}
 	else
